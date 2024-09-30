@@ -1,6 +1,6 @@
 <template lang="pug">
 .header
-  v-navigation-drawer.pa-0.nav-drawer(v-model="drawer" fixed temporary)
+  v-navigation-drawer.pa-0.nav-drawer(v-model="drawer" fixed temporary style="overflow: hidden;")
     v-list(nav dense)
       v-item-group(v-model="group" active-class="deep-purple-text text--accent-4")
         a.header-list(href="/login" v-if="!userStore || !userStore.userId")

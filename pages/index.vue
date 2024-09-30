@@ -1,6 +1,49 @@
 <template lang="pug">
 .index-page
   .wrap
+    .content(style="padding: 0px 0;")
+      .commission
+        .thisweek-commission.commission-item
+          .text-h6 今週の収益
+          div(style="display: flex; align-items: flex-end; margin: 8px 0;")
+            .text-h2(style="margin: 0;") 114514
+            .text-h6(style="margin-left: 0.5em;") 円
+      .hourly-and-operate-time(style="display:flex;")
+        .hourly.commission-item(style="width:50%;margin-right: 8px;")
+          .text-h6 時給
+          .hourly-text.text-h4 1919円
+        .operate-time.commission-item(style="width:50%;margin-left: 8px;")
+          .text-h6 稼働時間
+          .operate-time-text.text-h4 19 時間 19 分
+  .wrap
+    v-card.content
+      v-sparkline(
+        :model-value="commissionGraphList"
+        fill=false
+        line-width=2
+        gradient-direction="top"
+        padding=8
+        auto-line-width=false
+        stroke-linecap="round"
+        type="trend"
+        smooth=10
+        auto-draw
+        show-labels
+        )
+  .wrap
+    v-card.content
+      v-tabs(active-color="red" v-model="tab")
+        v-tab.text-h6.v-tab-mainscreen(value='commission') 収益
+        v-tab.text-h6.v-tab-mainscreen(value='hourly') 時給
+        v-tab.text-h6.v-tab-mainscreen(value='operateTime') 時間
+      v-window(v-model="tab")
+        v-window-item.tab-item(value='commission')
+          p a
+        v-window-item.tab-item(value='hourly')
+          p b
+        v-window-item.tab-item(value='operateTime')
+          p c
+  .wrap
     v-card.content(elevation="4")
       .text-h1
         span UberUTL {{ PackageJson.version }}
@@ -80,14 +123,14 @@ import mixins from '~/mixins/mixins'
 import webpush from '~/js/webpush'
 import metaFunctions from '~/js/metaFunctions'
 import Setup from '~/js/setup'
+
 export default {
   name: 'index',
-  components: {},
   mixins: [mixins],
   setup() {
     //サーバーサイドで仮のタイトルを設定、mountedで言語ごとに再設定する
     Setup.setTitle('Top')
-    Setup.setDescription('Nuxt環境を簡単にセットアップできる全部入りパッケージ')
+    Setup.setDescription('Uber Driver用のユーティリティ')
   },
   data() {
     return {
@@ -97,10 +140,32 @@ export default {
       dialogText: null,
       dialogActions: null,
       counter: useCounterStore(),
+      tab: null,
+      commission: [
+        {
+          date: new Date(2024, 9, 29), //稼働日時
+          commission: 8432, //報酬（円）
+          time: 60 * 4.7, //稼働時間（分）
+        },
+        {
+          date: new Date(2024, 9, 28),
+          commission: 12897,
+          time: 60 * 6.7,
+        },
+        {
+          date: new Date(2024, 9, 27),
+          commission: 4893,
+          time: 60 * 3.2,
+        },
+      ],
+      commissionGraphList: [],
     }
   },
   async mounted() {
     this.setTitle(this.$t('index.title'))
+    for (const work of this.commission) {
+      this.commissionGraphList.push(work.commission)
+    }
   },
   methods: {
     async pushForMe() {
@@ -168,3 +233,24 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.commission-item {
+  margin: 8px 0;
+  padding: 8px 16px;
+  background: rgb(var(--v-theme-surface));
+  border-radius: var(--border-radius);
+}
+.v-tab-mainscreen {
+  margin: 0 !important;
+  padding: 4px;
+  height: auto !important;
+}
+.v-slide-group-item--active {
+  background: var(--accent-color);
+  color: white;
+}
+.tab-item {
+  padding: 8px;
+}
+</style>

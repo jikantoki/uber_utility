@@ -391,8 +391,8 @@ export default {
         case 'hourly':
           this.commission.sort((a, b) => {
             return (
-              this.calcHourly(a.commission, a.time) -
-              this.calcHourly(b.commission, b.time)
+              this.calcHourly(b.commission, b.time) -
+              this.calcHourly(a.commission, a.time)
             )
           })
           break

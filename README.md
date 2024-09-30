@@ -20,11 +20,11 @@ Uber Driverアプリをもっと楽しく使えるユーティリティ
 - WPAでアプリとして利用可能
 - Androidに限り、APKファイルで配布するかも
 
-___
+---
 
 ここから下はテンプレートのREADMEです
 
-___
+---
 
 ## Nuxt3 Template
 
@@ -176,6 +176,10 @@ Header append Access-Control-Allow-Origin: "*"
 #### /database.sqlファイルをインポートする
 
 PHPMyAdminが使える環境ならDB直下にインポートして終わり、コマンドラインでやる方法は知らん
+
+#### ※インポートでエラーが出たら
+
+/database_VIEW.sql の中身をコピーしてphpmyadminで直接実行
 
 ### デフォルトAPIのトークンを用意する
 

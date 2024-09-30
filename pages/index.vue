@@ -14,7 +14,7 @@
           .hourly-text.text-h5 {{ thisWeekHourly }}円
         .operate-time.commission-item(style="width:60%;margin-left: 8px;")
           .text-h6 稼働時間
-          .operate-time-text.text-h5 {{ thisWeekOperateTime }}
+          .operate-time-text.text-h5 {{ Math.floor(thisWeekOperateTime / 60) }}時間{{ Math.floor(thisWeekOperateTime % 60) }}分
   .wrap
   .wrap
     v-card.content

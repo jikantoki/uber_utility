@@ -246,7 +246,7 @@ export default {
   padding: 4px;
   height: auto !important;
 }
-.v-slide-group-item--active {
+.v-tab-item--selected {
   background: var(--accent-color);
   color: white;
 }

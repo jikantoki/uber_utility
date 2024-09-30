@@ -9,14 +9,15 @@
             .text-h2(style="margin: 0;") 114514
             .text-h6(style="margin-left: 0.5em;") 円
       .hourly-and-operate-time(style="display:flex;")
-        .hourly.commission-item(style="width:50%;margin-right: 8px;")
+        .hourly.commission-item(style="width:40%;margin-right: 8px;")
           .text-h6 時給
-          .hourly-text.text-h4 1919円
-        .operate-time.commission-item(style="width:50%;margin-left: 8px;")
+          .hourly-text.text-h5 1919円
+        .operate-time.commission-item(style="width:60%;margin-left: 8px;")
           .text-h6 稼働時間
-          .operate-time-text.text-h4 19 時間 19 分
+          .operate-time-text.text-h5 19 時間 19 分
   .wrap
     v-card.content
+      .text-h6 ウィークリーグラフ
       v-sparkline(
         :model-value="commissionGraphList"
         fill=false
@@ -33,9 +34,9 @@
   .wrap
     v-card.content
       v-tabs(active-color="red" v-model="tab")
-        v-tab.text-h6.v-tab-mainscreen(value='commission') 収益
-        v-tab.text-h6.v-tab-mainscreen(value='hourly') 時給
-        v-tab.text-h6.v-tab-mainscreen(value='operateTime') 時間
+        v-tab.text-h7.v-tab-mainscreen(value='commission') 収益
+        v-tab.text-h7.v-tab-mainscreen(value='hourly') 時給
+        v-tab.text-h7.v-tab-mainscreen(value='operateTime') 時間
       v-window(v-model="tab")
         v-window-item.tab-item(value='commission')
           p a

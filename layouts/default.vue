@@ -6,7 +6,7 @@
       common-header
     v-main#main
       .center.main-content
-        router-view
+        nuxt-page
       common-bar(
         v-if="!userStore.userId"
         title="ログインして、もっと便利に"

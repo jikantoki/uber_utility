@@ -3,10 +3,11 @@
   .wrap
     v-card.content(elevation="4")
       .text-h1
-        span NuxTemp {{ PackageJson.version }}
+        span UberUTL {{ PackageJson.version }}
         img.ontext(src="~/assets/logo.png")
       hr
-      .text-h6 {{ $t('index.nuxtSampleProject') }}
+      //.text-h6 {{ $t('index.nuxtSampleProject') }}
+      .text-h6 Uber Utility
       .btns
         v-btn(@click="pushForMe()") {{ $t('index.buttons.notificationTest') }}
         //v-btn.is-not-pwa(@click="download('/download/nuxTemp.apk','vuetifyTemplate.apk')") Download APK

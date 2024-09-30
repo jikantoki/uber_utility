@@ -1,8 +1,8 @@
 {
-  "name": "nuxt-app",
+  "name": "uber-utility",
   "private": true,
   "type": "module",
-  "version": "3.0.0",
+  "version": "0.0.1",
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev --port 12345",

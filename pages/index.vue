@@ -34,16 +34,74 @@
   .wrap
     v-card.content
       v-tabs(active-color="red" v-model="tab")
-        v-tab.text-h7.v-tab-mainscreen(value='commission') 収益
-        v-tab.text-h7.v-tab-mainscreen(value='hourly') 時給
-        v-tab.text-h7.v-tab-mainscreen(value='operateTime') 時間
-      v-window(v-model="tab")
+        v-tab.text-h7.v-tab-mainscreen(value='dafault' @click='commissionSort("date")') 全表示
+        v-tab.text-h7.v-tab-mainscreen(value='date' @click='commissionSort("date")') 日付
+        v-tab.text-h7.v-tab-mainscreen(value='commission' @click='commissionSort("commission")') 収益
+        v-tab.text-h7.v-tab-mainscreen(value='hourly' @click='commissionSort("hourly")') 時給
+        v-tab.text-h7.v-tab-mainscreen(value='operateTime' @click='commissionSort("operateTime")') 稼働時間
+      v-window.tab-item-wrap(v-model="tab")
+        v-window-item.tab-item(value='dafault')
+          table(style="width: 100%;")
+            thead
+              tr
+                th 日付
+                th 稼働時間
+                th 獲得報酬
+                th 時給
+            tbody
+              tr(v-for="(work, cnt) in commission")
+                th(style="font-weight: unset;") {{ ('0' + (work.date.getMonth() + 1)).slice(-2) }}月{{ ('0' + work.date.getDate()).slice(-2) }}日
+                th(style="font-weight: unset;") {{ ('0' + Math.floor(work.time / 60)).slice(-2) }}時間{{ ('0' + work.time % 60).slice(-2) }}分
+                th(style="font-weight: unset;") {{ work.commission }}円
+                th(style="font-weight: unset;") {{ Math.floor(work.commission / (work.time / 60)) }}円
+        v-window-item.tab-item(value='date')
+          table(style="width: 100%;")
+            thead
+              tr
+                th 日付
+                th 稼働時間
+                th 獲得報酬
+            tbody
+              tr(v-for="(work, cnt) in commission")
+                th(style="font-weight: unset;") {{ ('0' + (work.date.getMonth() + 1)).slice(-2) }}月{{ ('0' + work.date.getDate()).slice(-2) }}日
+                th(style="font-weight: unset;") {{ ('0' + Math.floor(work.time / 60)).slice(-2) }}時間{{ ('0' + work.time % 60).slice(-2) }}分
+                th(style="font-weight: unset;") {{ work.commission }}円
         v-window-item.tab-item(value='commission')
-          p a
+          table(style="width: 100%;")
+            thead
+              tr
+                th 順位
+                th 日付
+                th 獲得報酬
+            tbody
+              tr(v-for="(work, cnt) in commission")
+                th(style="font-weight: unset;") {{ cnt + 1 }}
+                th(style="font-weight: unset;") {{ ('0' + (work.date.getMonth() + 1)).slice(-2) }}月{{ ('0' + work.date.getDate()).slice(-2) }}日
+                th(style="font-weight: unset;") {{ work.commission }}円
         v-window-item.tab-item(value='hourly')
-          p b
+          table(style="width: 100%;")
+            thead
+              tr
+                th 順位
+                th 日付
+                th 時給
+            tbody
+              tr(v-for="(work, cnt) in commission")
+                th(style="font-weight: unset;") {{ cnt + 1 }}
+                th(style="font-weight: unset;") {{ ('0' + (work.date.getMonth() + 1)).slice(-2) }}月{{ ('0' + work.date.getDate()).slice(-2) }}日
+                th(style="font-weight: unset;") {{ Math.floor(work.commission / (work.time / 60)) }}円
         v-window-item.tab-item(value='operateTime')
-          p c
+          table(style="width: 100%;")
+            thead
+              tr
+                th 順位
+                th 日付
+                th 稼働時間
+            tbody
+              tr(v-for="(work, cnt) in commission")
+                th(style="font-weight: unset;") {{ cnt + 1 }}
+                th(style="font-weight: unset;") {{ ('0' + (work.date.getMonth() + 1)).slice(-2) }}月{{ ('0' + work.date.getDate()).slice(-2) }}日
+                th(style="font-weight: unset;") {{ ('0' + Math.floor(work.time / 60)).slice(-2) }}時間{{ ('0' + work.time % 60).slice(-2) }}分
   .wrap
     v-card.content(elevation="4")
       .text-h1
@@ -144,17 +202,17 @@ export default {
       tab: null,
       commission: [
         {
-          date: new Date(2024, 9, 29), //稼働日時
+          date: new Date(2024, 8, 29), //稼働日時
           commission: 8432, //報酬（円）
           time: 60 * 4.7, //稼働時間（分）
         },
         {
-          date: new Date(2024, 9, 28),
+          date: new Date(2024, 8, 28),
           commission: 12897,
           time: 60 * 6.7,
         },
         {
-          date: new Date(2024, 9, 27),
+          date: new Date(2024, 8, 27),
           commission: 4893,
           time: 60 * 3.2,
         },
@@ -230,6 +288,27 @@ export default {
           },
         },
       ]
+    },
+    commissionSort(sortBy) {
+      switch (sortBy) {
+        case 'date':
+          this.commission.sort((a, b) => {
+            return b.date - a.date
+          })
+          break
+        case 'commission':
+          this.commission.sort((a, b) => {
+            return b.commission - a.commission
+          })
+          break
+        case 'operateTime':
+          this.commission.sort((a, b) => {
+            return b.time - a.time
+          })
+          break
+        default:
+          break
+      }
     },
   },
 }

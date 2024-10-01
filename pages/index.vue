@@ -19,11 +19,11 @@
   .wrap
     v-card.content
       v-tabs(active-color="red" v-model="tab")
-        v-tab.text-h7.v-tab-mainscreen(value='dafault' @click='commissionSort("date")') 全表示
-        v-tab.text-h7.v-tab-mainscreen(value='date' @click='commissionSort("date")') 日付
-        v-tab.text-h7.v-tab-mainscreen(value='commission' @click='commissionSort("commission")') 収益
-        v-tab.text-h7.v-tab-mainscreen(value='hourly' @click='commissionSort("hourly")') 時給
-        v-tab.text-h7.v-tab-mainscreen(value='operateTime' @click='commissionSort("operateTime")') 稼働時間
+        v-tab.text-h7.v-tab-mainscreen(value='dafault') 全表示
+        v-tab.text-h7.v-tab-mainscreen(value='date') 日付
+        v-tab.text-h7.v-tab-mainscreen(value='commission') 収益
+        v-tab.text-h7.v-tab-mainscreen(value='hourly') 時給
+        v-tab.text-h7.v-tab-mainscreen(value='operateTime') 稼働時間
       v-window.tab-item-wrap(v-model="tab")
         v-window-item.tab-item(value='dafault')
           v-card.content
@@ -35,8 +35,9 @@
               smooth=10
               auto-draw
               show-labels
-              :labels="dateHistory"
               )
+              //:labels="dateHistory"
+              template(v-slot:label="item") {{ item.value }}円
           table(style="width: 100%;")
             thead
               tr
@@ -60,8 +61,9 @@
               smooth=10
               auto-draw
               show-labels
-              :labels="dateHistory"
               )
+              //:labels="dateHistory"
+              template(v-slot:label="item") {{ item.value }}円
           table(style="width: 100%;")
             thead
               tr
@@ -83,8 +85,9 @@
               smooth=10
               auto-draw
               show-labels
-              :labels="dateHistory"
               )
+              //:labels="dateHistory"
+              template(v-slot:label="item") {{ item.value }}円
           table(style="width: 100%;")
             thead
               tr
@@ -106,8 +109,9 @@
               smooth=10
               auto-draw
               show-labels
-              :labels="dateHistory"
               )
+              //:labels="dateHistory"
+              template(v-slot:label="item") {{ item.value }}円
           table(style="width: 100%;")
             thead
               tr
@@ -129,8 +133,9 @@
               smooth=10
               auto-draw
               show-labels
-              :labels="dateHistory"
               )
+              //:labels="dateHistory"
+              template(v-slot:label="item") {{ ('0' + Math.floor(item.value / 60)).slice(-2) }}時間{{ ('0' + item.value % 60).slice(-2) }}分
           table(style="width: 100%;")
             thead
               tr
@@ -373,11 +378,6 @@ export default {
     },
     commissionSort(sortBy) {
       switch (sortBy) {
-        case 'date':
-          this.commission.sort((a, b) => {
-            return b.date - a.date
-          })
-          break
         case 'commission':
           this.commission.sort((a, b) => {
             return b.commission - a.commission
@@ -396,7 +396,11 @@ export default {
             )
           })
           break
+        case 'date':
         default:
+          this.commission.sort((a, b) => {
+            return b.date - a.date
+          })
           break
       }
     },
@@ -420,6 +424,14 @@ export default {
       } else {
         return 0
       }
+    },
+  },
+  watch: {
+    tab: {
+      handler: function (newValue) {
+        this.commissionSort(newValue)
+      },
+      immediate: true,
     },
   },
 }

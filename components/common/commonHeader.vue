@@ -49,7 +49,7 @@
             v-icon(style="opacity:0.7") mdi-translate-variant
             p.nav {{ $t('header.language') }}
             v-icon(style="opacity:0.7") mdi-menu-right
-          v-menu(activator="parent" offset-x)
+          v-menu(activator="parent" offset-x offset-y)
             v-list
               v-list-item(
                 link
@@ -72,12 +72,13 @@
   v-app-bar
     template(v-slot:append)
       v-btn(icon="mdi-magnify" @click="headerSearchDialog = true")
-      v-btn(icon)
-        v-icon mdi-dots-vertical
-        v-menu(activator="parent" offset-y)
-          v-list
-            v-list-item(link @click="a('/rule')")
-              v-list-item-title 利用規約
+      v-menu
+        template(v-slot:activator="{props}")
+          v-btn(icon v-bind="props" style="position: relative;")
+            v-icon mdi-dots-vertical
+        v-list
+          v-list-item(link @click="a('/rule')")
+            v-list-item-title 利用規約
     v-app-bar-nav-icon(v-if="isRoot && (!userStore || !userStore.profile || !userStore.profile.userId)" @click="toggleDrawer()")
     .nav-icon(v-if="isRoot && userStore && userStore.profile && userStore.profile.userId")
       .nav-round(@click="toggleDrawer()" v-ripple)

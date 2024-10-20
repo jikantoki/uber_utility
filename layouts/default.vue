@@ -1,7 +1,7 @@
 <template lang="pug">
 .v-app-main-application#nuxt
   splash(v-show="splash")
-  v-app.wrap100vh#nuxt(ontouchstart="" style="min-height: 100vh!important;width:100vw" :style="style")
+  v-app.wrap100vh(style="min-height: 100vh!important;width:100vw" :style="style")
     header
       common-header
     v-main#main

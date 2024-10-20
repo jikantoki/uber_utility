@@ -20,10 +20,11 @@
           v-btn.text-h6(
             style="height: auto; width: 100%; padding: 8px; margin: 8px 0; border-radius: var(--border-radius);"
             prepend-icon="mdi-pencil"
+            color="var(--accent-color)"
           ) 編集
   .wrap
-  .wrap
     v-card.content
+      p.text-h6.mb-4 稼働グラフ
       v-tabs(active-color="red" v-model="tab")
         v-tab.text-h7.v-tab-mainscreen(value='dafault') 全表示
         v-tab.text-h7.v-tab-mainscreen(value='date') 日付

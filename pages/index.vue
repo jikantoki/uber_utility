@@ -15,6 +15,12 @@
         .operate-time.commission-item(style="width:60%;margin-left: 8px;")
           .text-h6 稼働時間
           .operate-time-text.text-h5 {{ Math.floor(thisWeekOperateTime / 60) }}時間{{ Math.floor(thisWeekOperateTime % 60) }}分
+      .edit-work-button(style="display: flex;")
+        a(href="/edit" style="width: 100%;")
+          v-btn.text-h6(
+            style="height: auto; width: 100%; padding: 8px; margin: 8px 0; border-radius: var(--border-radius);"
+            prepend-icon="mdi-pencil"
+          ) 編集
   .wrap
   .wrap
     v-card.content
@@ -35,9 +41,9 @@
               smooth=10
               auto-draw
               show-labels
+              :labels="dateHistory"
               )
-              //:labels="dateHistory"
-              template(v-slot:label="item") {{ item.value }}円
+              template(v-slot:label="item") {{ item.value }}
           table(style="width: 100%;")
             thead
               tr
@@ -61,9 +67,9 @@
               smooth=10
               auto-draw
               show-labels
+              :labels="dateHistory"
               )
-              //:labels="dateHistory"
-              template(v-slot:label="item") {{ item.value }}円
+              template(v-slot:label="item") {{ item.value }}
           table(style="width: 100%;")
             thead
               tr
@@ -85,9 +91,9 @@
               smooth=10
               auto-draw
               show-labels
+              :labels="dateHistory"
               )
-              //:labels="dateHistory"
-              template(v-slot:label="item") {{ item.value }}円
+              template(v-slot:label="item") {{ item.value }}
           table(style="width: 100%;")
             thead
               tr
@@ -109,9 +115,9 @@
               smooth=10
               auto-draw
               show-labels
+              :labels="dateHistory"
               )
-              //:labels="dateHistory"
-              template(v-slot:label="item") {{ item.value }}円
+              template(v-slot:label="item") {{ item.value }}
           table(style="width: 100%;")
             thead
               tr
@@ -133,9 +139,9 @@
               smooth=10
               auto-draw
               show-labels
+              :labels="dateHistory"
               )
-              //:labels="dateHistory"
-              template(v-slot:label="item") {{ ('0' + Math.floor(item.value / 60)).slice(-2) }}時間{{ ('0' + item.value % 60).slice(-2) }}分
+              //template(v-slot:label="item") {{ ('0' + Math.floor(item.value / 60)).slice(-2) }}時間{{ ('0' + item.value % 60).slice(-2) }}分
           table(style="width: 100%;")
             thead
               tr
@@ -301,9 +307,9 @@ export default {
       this.hourlyHistory.push(hourly)
       this.timeHistory.push(work.time)
       this.dateHistory.push(
-        `${('0' + (work.date.getMonth() + 1)).slice(-2)}月${(
+        `${('0' + (work.date.getMonth() + 1)).slice(-2)}/${(
           '0' + work.date.getDate()
-        ).slice(-2)}日`,
+        ).slice(-2)}`,
       )
       this.thisWeekCommission += work.commission
       this.thisWeekHourly += hourly

@@ -11,11 +11,15 @@ import Functions from '~/js/Functions'
 import ContentLoader from '~/components/LoadingText'
 import { useCommonBarStore } from '~/composables/commonBar'
 import { useThemeStore } from '~/composables/theme'
+import { VDateInput } from 'vuetify/labs/VDateInput'
+import { VNumberInput } from 'vuetify/labs/VNumberInput'
 
 export default {
   components: {
     adsense: adsense,
     ContentLoader: ContentLoader,
+    VDateInput,
+    VNumberInput,
   },
   data() {
     return {
@@ -284,6 +288,56 @@ export default {
     /** 連想配列かどうか？（T/F） */
     isObject(obj) {
       return obj instanceof Object && !(obj instanceof Array) ? true : false
+    },
+
+    commissionSort(sortBy) {
+      switch (sortBy) {
+        case 'commission':
+          this.commission.sort((a, b) => {
+            return b.commission - a.commission
+          })
+          break
+        case 'operateTime':
+          this.commission.sort((a, b) => {
+            return b.time - a.time
+          })
+          break
+        case 'hourly':
+          this.commission.sort((a, b) => {
+            return (
+              this.calcHourly(b.commission, b.time) -
+              this.calcHourly(a.commission, a.time)
+            )
+          })
+          break
+        case 'date':
+        default:
+          this.commission.sort((a, b) => {
+            return b.date - a.date
+          })
+          break
+      }
+    },
+    /**
+     * Date型をN月N日に変換
+     * @param date Date
+     */
+    dateToString(date) {
+      return `${('0' + (date.getMonth() + 1)).slice(-2)}月${(
+        '0' + date.getDate()
+      ).slice(-2)}日`
+    },
+    /**
+     * 時給計算
+     * @param commission 報酬額
+     * @param time 稼働時間
+     */
+    calcHourly(commission, time) {
+      if (commission && time) {
+        return Math.floor(commission / (time / 60))
+      } else {
+        return 0
+      }
     },
 
     //ここからは優先度低いやつ

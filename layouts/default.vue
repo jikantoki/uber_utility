@@ -1,7 +1,7 @@
 <template lang="pug">
 .v-app-main-application#nuxt
   splash(v-show="splash")
-  v-app.wrap100vh(style="min-height: 100vh!important;width:100vw" :style="style")
+  v-app.wrap100vh(style="min-height: 100vh!important;width:100vw")
     header
       common-header
     v-main#main
@@ -71,7 +71,6 @@ export default {
      */
     return {
       splash: true,
-      style: 'opacity: 0;',
       isDisplayCommonPushButtons: false,
       commonBarButtons: [
         {
@@ -138,8 +137,7 @@ export default {
      */
     window.setTimeout(() => {
       this.splash = false
-      this.style = 'opacity: 1;'
-    }, 2000)
+    }, 1000)
   },
   /**
    * ページ離脱時にやりたい事

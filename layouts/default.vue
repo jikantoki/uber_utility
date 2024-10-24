@@ -59,7 +59,7 @@ export default {
     commonHeader: commonHeader,
     commonFooter: commonFooter,
     splash: splash,
-    commonBar: commonBar,
+    commonBar,
   },
   mixins: [mixins],
   /**

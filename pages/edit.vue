@@ -143,47 +143,36 @@ export default {
       dialogErrorMessage: null,
       /** 編集モード（trueは上書きを許可、falseは新規登録） */
       editMode: false,
-      commission: [
+      /** 報酬リスト
+       * サンプル
         {
+          workId: 'hogefuga', //ランダムID
           date: new Date(2024, 8, 29), //稼働日時
           commission: 11136, //報酬（円）
           time: 60 * 4.7, //稼働時間（分）
+          memo: 'piyo', //メモ
         },
-        {
-          date: new Date(2024, 8, 28),
-          commission: 13756,
-          time: 60 * 5.7,
-        },
-        {
-          date: new Date(2024, 8, 27),
-          commission: 4427,
-          time: 60 * 2.5,
-        },
-        {
-          date: new Date(2024, 8, 26),
-          commission: 3036,
-          time: 60 * 2.1,
-        },
-        {
-          date: new Date(2024, 8, 25),
-          commission: 11689,
-          time: 60 * 4.5,
-        },
-        {
-          date: new Date(2024, 8, 24),
-          commission: 0,
-          time: 60 * 0,
-        },
-        {
-          date: new Date(2024, 8, 23),
-          commission: 16371,
-          time: 60 * 5.5,
-        },
-      ],
+       */
+      commission: [],
     }
   },
-  mounted() {
+  async mounted() {
     this.setTitle('編集')
+    const getWork = await this.sendAjaxWithAuth('/getWork.php', {
+      id: this.userStore.userId,
+      token: this.userStore.userToken,
+    })
+    const worklist = JSON.parse(getWork.body.work)
+    worklist.forEach((workData) => {
+      this.commission.push({
+        date: new Date(workData.dateUnixtime * 1000),
+        workId: workData.workId,
+        commission: workData.commission,
+        time: workData.time,
+        memo: workData.memo,
+      })
+    })
+    console.log(worklist)
   },
   methods: {
     clearWorkData: function () {
@@ -194,6 +183,7 @@ export default {
         commission: null,
         memo: null,
       }
+      this.dialogErrorMessage = null
     },
     /** 稼働日の追加 */
     addWorkData: function (workData) {

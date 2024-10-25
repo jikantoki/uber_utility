@@ -158,6 +158,8 @@ export default {
   },
   async mounted() {
     this.setTitle('編集')
+
+    //commissionリスト取得
     const getWork = await this.sendAjaxWithAuth('/getWork.php', {
       id: this.userStore.userId,
       token: this.userStore.userToken,
@@ -172,7 +174,6 @@ export default {
         memo: workData.memo,
       })
     })
-    console.log(worklist)
   },
   methods: {
     clearWorkData: function () {
@@ -257,7 +258,18 @@ export default {
       this.editMode = true
       this.editDialog = true
     },
-    deleteWorkData: function (indexNumber) {
+    deleteWorkData: async function (indexNumber) {
+      const ans = await this.sendAjaxWithAuth(
+        '/deleteWork.php',
+        {
+          id: this.userStore.userId,
+          token: this.userStore.userToken,
+        },
+        {
+          workId: this.commission[indexNumber].workId,
+        },
+      )
+      console.log(ans)
       this.commission.splice(indexNumber, 1)
     },
   },

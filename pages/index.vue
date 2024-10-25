@@ -255,43 +255,17 @@ export default {
       thisWeekCommission: 0, //今週の収益
       thisWeekHourly: 0, //今週の時給
       thisWeekOperateTime: 0, //今週の稼働時間
-      commission: [
+      /** 報酬リスト
+       * サンプル
         {
+          workId: 'hogefuga', //ランダムID
           date: new Date(2024, 8, 29), //稼働日時
           commission: 11136, //報酬（円）
           time: 60 * 4.7, //稼働時間（分）
+          memo: 'piyo', //メモ
         },
-        {
-          date: new Date(2024, 8, 28),
-          commission: 13756,
-          time: 60 * 5.7,
-        },
-        {
-          date: new Date(2024, 8, 27),
-          commission: 4427,
-          time: 60 * 2.5,
-        },
-        {
-          date: new Date(2024, 8, 26),
-          commission: 3036,
-          time: 60 * 2.1,
-        },
-        {
-          date: new Date(2024, 8, 25),
-          commission: 11689,
-          time: 60 * 4.5,
-        },
-        {
-          date: new Date(2024, 8, 24),
-          commission: 0,
-          time: 60 * 0,
-        },
-        {
-          date: new Date(2024, 8, 23),
-          commission: 16371,
-          time: 60 * 5.5,
-        },
-      ],
+       */
+      commission: [],
       commissionHistory: [], //日付順の報酬額リスト
       hourlyHistory: [], //日付順の時給リスト
       timeHistory: [], //日付順の稼働時間リスト
@@ -300,6 +274,23 @@ export default {
   },
   async mounted() {
     this.setTitle(this.$t('index.title'))
+
+    //commissionリスト取得
+    const getWork = await this.sendAjaxWithAuth('/getWork.php', {
+      id: this.userStore.userId,
+      token: this.userStore.userToken,
+    })
+    const worklist = JSON.parse(getWork.body.work)
+    worklist.forEach((workData) => {
+      this.commission.push({
+        date: new Date(workData.dateUnixtime * 1000),
+        workId: workData.workId,
+        commission: workData.commission,
+        time: workData.time,
+        memo: workData.memo,
+      })
+    })
+
     let cnt = 0 //実際に稼働した日数をカウント
     for (const work of this.commission.reverse()) {
       const hourly = this.calcHourly(work.commission, work.time)

@@ -10,7 +10,7 @@
           size="large"
           color="var(--accent-color)"
           style="height: auto; width: 100%; border-radius: var(--border-radius); color: white;"
-          @click="editDialog=true"
+          @click="clearWorkData();editDialog=true;editMode=false"
         ) 新規追加
         table(style="width: 100%;")
           thead
@@ -27,7 +27,7 @@
               td(style="font-weight: unset;") {{ work.commission }}円
               td(style="font-weight: unset;") {{ calcHourly(work.commission, work.time) }}円
               td(style="font-weight: unset; max-width: 5em;")
-                v-btn.my-0(color="var(--accent-color)" style="color: white;") 編集
+                v-btn.my-0(color="var(--accent-color)" style="color: white;" @click="editWorkData(cnt)") 編集
                 v-btn.my-0(color="var(--color-error)" style="color: white;" @click="deleteWorkData(cnt)") 削除
         p.text-h5.ma-4(
           v-if="!commission[0]"
@@ -35,7 +35,7 @@
         ) データが登録されていません！
   v-dialog(v-model="editDialog" persistent max-width="640px")
     v-card
-      v-card-title 新規追加
+      v-card-title {{ editMode ? '編集' : '新規追加' }}
       .editor-form
         table.px-4.vertical-table(
           style="width: 100%;"
@@ -53,6 +53,7 @@
                     v-date-input(
                       placeholder="稼働日を選択"
                       v-model="editForm.date"
+                      :disabled="editMode"
                     )
                 td.px-2(style="font-weight: unset;")
                   .td(style="display: flex; align-items: center;")
@@ -140,6 +141,8 @@ export default {
       },
       /** エラーメッセージ（nullで非表示） */
       dialogErrorMessage: null,
+      /** 編集モード（trueは上書きを許可、falseは新規登録） */
+      editMode: false,
       commission: [
         {
           date: new Date(2024, 8, 29), //稼働日時
@@ -183,6 +186,15 @@ export default {
     this.setTitle('編集')
   },
   methods: {
+    clearWorkData: function () {
+      this.editForm = {
+        date: null,
+        hour: null,
+        min: null,
+        commission: null,
+        memo: null,
+      }
+    },
     /** 稼働日の追加 */
     addWorkData: function (workData) {
       if (workData.date && workData.commission !== null) {
@@ -190,14 +202,20 @@ export default {
           return work.date
         })
         let duplicationFlag = false
+        let count = 0
         dates.forEach((date) => {
           if (workData.date - date == 0) {
             duplicationFlag = true
           }
+          if (!duplicationFlag) count++ //breakできないためこのような記述
         })
         if (duplicationFlag) {
-          this.dialogErrorMessage = '既に登録されている日付です'
-          return false
+          if (this.editMode) {
+            this.commission.splice(count, 1)
+          } else {
+            this.dialogErrorMessage = '既に登録されている日付です'
+            return false
+          }
         }
 
         this.dialogErrorMessage = null
@@ -211,6 +229,17 @@ export default {
       } else {
         this.dialogErrorMessage = '日付と報酬のnullは受け付けられません'
       }
+    },
+    /** 指定された場所のデータを編集する */
+    editWorkData: function (indexNumber) {
+      this.editForm.date = this.commission[indexNumber].date
+      this.editForm.hour = Math.floor(this.commission[indexNumber].time / 60)
+      this.editForm.min = this.commission[indexNumber].time % 60
+      this.editForm.commission = this.commission[indexNumber].commission
+      this.editForm.memo = this.commission[indexNumber].memo
+      this.dialogErrorMessage = null
+      this.editMode = true
+      this.editDialog = true
     },
     deleteWorkData: function (indexNumber) {
       this.commission.splice(indexNumber, 1)

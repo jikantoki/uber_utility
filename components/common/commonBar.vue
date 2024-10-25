@@ -12,6 +12,7 @@
           :key="key"
           :href="button.href"
           @click="$emit('clicked',button.return)"
+          style="cursor: pointer;"
           )
           .v-ripple.button-text.px-4.py-1(v-ripple) {{ button.title }}
 </template>

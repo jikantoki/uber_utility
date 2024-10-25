@@ -127,7 +127,6 @@ export default {
         password: this.password,
       })
         .then((e) => {
-          console.log(e.body)
           if (e.body.status === 'ok') {
             this.page = 1
             this.errorMessage = null

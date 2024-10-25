@@ -26,7 +26,7 @@ $token = $_SERVER['HTTP_TOKEN'];
 $workData = json_decode($_POST['work'], true);
 $workDate = $_POST['workDate'];
 $commission = $workData['commission'];
-$memo = $_POST['memo'];
+$memo = $workData['memo'];
 $time = $workData['hour'] * 60 + $workData['min'];
 /** 未使用なランダムID */
 $workId = SQLmakeRandomId('work_list', 'workId');

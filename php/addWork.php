@@ -63,27 +63,3 @@ echo json_encode([
   'work' => json_encode($workData),
   'already' => $alreadyAddedFlag //上書きして消えたもの
 ]);
-/*
-$id = $_SERVER['HTTP_ID'];
-$password = $_SERVER['HTTP_PASSWORD'];
-$otp = $_SERVER['HTTP_TOKEN'];
-$token = createUserToken($id, $password, $otp);
-if ($token) {
-  echo json_encode([
-    'status' => 'ok',
-    'reason' => 'Thank you!',
-    'token' => $token,
-    'id' => $id
-  ]);
-  $secretId = idToSecretId($id);
-  $mailAddress = secretIdToMailAddress($secretId);
-  sendMail($mailAddress, 'ログインがあったよ！', '<h1>ハッハッハあああ</h1><p>本文</p>');
-  SQLupdate('user_secret_list', 'otp', null, 'secretId', $secretId);
-} else {
-  echo json_encode([
-    'status' => 'ng',
-    'reason' => 'Unknown user',
-    'errCode' => 20
-  ]);
-}
-*/

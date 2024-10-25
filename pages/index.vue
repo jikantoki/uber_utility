@@ -16,12 +16,26 @@
           .text-h6 稼働時間
           .operate-time-text.text-h5 {{ Math.floor(thisWeekOperateTime / 60) }}時間{{ Math.floor(thisWeekOperateTime % 60) }}分
       .edit-work-button(style="display: flex;")
-        a(href="/edit" style="width: 100%;")
+        a(
+          v-if="userStore && userStore.userId"
+          href="/edit"
+          style="width: 100%;"
+        )
           v-btn.text-h6(
             style="height: auto; width: 100%; padding: 8px; margin: 8px 0; border-radius: var(--border-radius);color: white;"
             prepend-icon="mdi-pencil"
             color="var(--accent-color)"
           ) 編集
+        a(
+          v-if="!userStore || !userStore.userId"
+          href="/login"
+          style="width: 100%;"
+        )
+          v-btn.text-h6(
+            style="height: auto; width: 100%; padding: 8px; margin: 8px 0; border-radius: var(--border-radius);color: white;"
+            prepend-icon="mdi-account-circle"
+            color="var(--accent-color)"
+          ) ログインして入力
   .wrap
     v-card.content
       p.text-h6.mb-4 稼働グラフ

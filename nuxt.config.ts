@@ -54,13 +54,6 @@ export default defineNuxtConfig({
     define: {
       'process.env.DEBUG': false,
     },
-    css: {
-      preprocessorOptions: {
-        scss: {
-          api: 'modern-compiler',
-        },
-      },
-    },
   },
   css: [
     '@/assets/main.scss',

@@ -8,6 +8,16 @@ export default defineNuxtPlugin((nuxtApp) => {
     components,
     directives,
     // 他の設定をここに記述していく
+    theme: {
+      themes: {
+        light: {
+          colors: {
+            surface: '#ffffff',
+            background: '#f0f0f0',
+          },
+        },
+      },
+    },
   })
 
   // Vue.js で Vuetify を使用する

@@ -18,7 +18,7 @@
       .edit-work-button(style="display: flex;")
         a(href="/edit" style="width: 100%;")
           v-btn.text-h6(
-            style="height: auto; width: 100%; padding: 8px; margin: 8px 0; border-radius: var(--border-radius);"
+            style="height: auto; width: 100%; padding: 8px; margin: 8px 0; border-radius: var(--border-radius);color: white;"
             prepend-icon="mdi-pencil"
             color="var(--accent-color)"
           ) 編集

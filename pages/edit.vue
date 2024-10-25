@@ -9,7 +9,7 @@
         v-btn.text-h5.mx-0.py-4(
           size="large"
           color="var(--accent-color)"
-          style="height: auto; width: 100%; border-radius: var(--border-radius);"
+          style="height: auto; width: 100%; border-radius: var(--border-radius); color: white;"
           @click="editDialog=true"
         ) 新規追加
         table(style="width: 100%;")
@@ -27,8 +27,12 @@
               td(style="font-weight: unset;") {{ work.commission }}円
               td(style="font-weight: unset;") {{ calcHourly(work.commission, work.time) }}円
               td(style="font-weight: unset; max-width: 5em;")
-                v-btn.my-0(color="var(--accent-color)") 編集
-                v-btn.my-0(color="var(--color-error)") 削除
+                v-btn.my-0(color="var(--accent-color)" style="color: white;") 編集
+                v-btn.my-0(color="var(--color-error)" style="color: white;" @click="deleteWorkData(cnt)") 削除
+        p.text-h5.ma-4(
+          v-if="!commission[0]"
+          style="text-align: center;"
+        ) データが登録されていません！
   v-dialog(v-model="editDialog" persistent max-width="640px")
     v-card
       v-card-title 新規追加
@@ -80,13 +84,29 @@
                       placeholder="現在実装中"
                       v-model="editForm.memo"
                     )
-      .testtesttest {{ editForm }}
+      .error-message.ma-4.py-2.px-4(
+        v-show="dialogErrorMessage"
+        style=`
+          background-color: var(--color-error);
+          color: white;
+          border-radius: var(--border-radius);
+          display: flex;
+          align-items: center;
+        `
+      )
+        v-icon mdi-alert-circle-outline
+        p.mx-4 {{ dialogErrorMessage }}
+        v-icon(
+          style="position: absolute; right: 1em;cursor: pointer;"
+          @click="dialogErrorMessage = null"
+        ) mdi-close
       v-card-actions
         v-btn(@click="editDialog=false" variant="elevated") キャンセル
         v-btn(
-          @click="editDialog=false;addWorkData(editForm)"
+          @click="addWorkData(editForm)"
           variant="elevated"
           color="var(--accent-color)"
+          style="color: white;"
         ) 保存
 </template>
 
@@ -118,6 +138,8 @@ export default {
         commission: null,
         memo: null,
       },
+      /** エラーメッセージ（nullで非表示） */
+      dialogErrorMessage: null,
       commission: [
         {
           date: new Date(2024, 8, 29), //稼働日時
@@ -163,15 +185,35 @@ export default {
   methods: {
     /** 稼働日の追加 */
     addWorkData: function (workData) {
-      //日付が被った場合のエラー処理未実装
       if (workData.date && workData.commission !== null) {
+        const dates = this.commission.map((work) => {
+          return work.date
+        })
+        let duplicationFlag = false
+        dates.forEach((date) => {
+          if (workData.date - date == 0) {
+            duplicationFlag = true
+          }
+        })
+        if (duplicationFlag) {
+          this.dialogErrorMessage = '既に登録されている日付です'
+          return false
+        }
+
+        this.dialogErrorMessage = null
         this.commission.push({
           date: workData.date,
           commission: workData.commission,
           time: workData.hour * 60 + workData.min,
           memo: workData.memo,
         })
+        this.editDialog = false
+      } else {
+        this.dialogErrorMessage = '日付と報酬のnullは受け付けられません'
       }
+    },
+    deleteWorkData: function (indexNumber) {
+      this.commission.splice(indexNumber, 1)
     },
   },
   watch: {

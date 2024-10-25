@@ -44,12 +44,12 @@
             v-icon(style="opacity:0.7") mdi-theme-light-dark
             p.nav {{ $t('header.theme') }}
             v-switch(v-model="isDarkTheme")
-        v-list-item.pa-4(link)
+        v-list-item.pa-4(link style="position: relative;")
           .v-item
             v-icon(style="opacity:0.7") mdi-translate-variant
             p.nav {{ $t('header.language') }}
             v-icon(style="opacity:0.7") mdi-menu-right
-          v-menu(activator="parent" offset-x offset-y)
+          v-menu(activator="parent" attach)
             v-list
               v-list-item(
                 link

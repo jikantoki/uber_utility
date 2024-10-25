@@ -132,6 +132,21 @@ export default {
         this.isDisplayCommonPushButtons = true
       })
 
+    //v-menu表示バグ一時的な修正
+    setInterval(() => {
+      const overlaysCollection =
+        document.getElementsByClassName('v-overlay--active')
+      const overlays = Array.from(overlaysCollection)
+      overlays.forEach((elm) => {
+        const overlayContentCollection =
+          elm.getElementsByClassName('v-overlay__content')
+        const overlayContent = Array.from(overlayContentCollection)
+        if (overlayContent[0].style.position == 'fixed') {
+          overlayContent[0].style.position = 'static'
+        }
+      })
+    }, 10)
+
     /**
      * mountedの最後に記述
      */
@@ -430,7 +445,7 @@ body {
       opacity: 0.7;
     }
   }
-  #main {
+  main.v-main {
     display: flex;
     flex-direction: column;
     .center.main-content {

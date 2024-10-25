@@ -295,9 +295,30 @@ export default {
       token: this.userStore.userToken,
     })
     const worklist = JSON.parse(getWork.body.work)
+    worklist.sort((a, b) => {
+      return b.dateUnixtime - a.dateUnixtime
+    })
+    console.log(worklist)
+    let latestDate
+    let firstDate
     worklist.forEach((workData) => {
+      const date = new Date(workData.dateUnixtime * 1000)
+      if (latestDate) {
+        if (latestDate < date) {
+          latestDate = date
+        }
+      } else {
+        latestDate = date
+      }
+      if (firstDate) {
+        if (firstDate > date) {
+          firstDate = date
+        }
+      } else {
+        firstDate = date
+      }
       this.commission.push({
-        date: new Date(workData.dateUnixtime * 1000),
+        date: date,
         workId: workData.workId,
         commission: workData.commission,
         time: workData.time,

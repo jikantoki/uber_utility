@@ -219,12 +219,37 @@ export default {
         }
 
         this.dialogErrorMessage = null
+
+        this.sendAjaxWithAuth(
+          '/addWork.php',
+          {
+            id: this.userStore.userId,
+            token: this.userStore.userToken,
+          },
+          {
+            work: workData,
+          },
+        )
+          .then((e) => {
+            console.log(e.body)
+            if (e.body.status === 'ok') {
+              //登録成功
+            } else {
+              //登録失敗
+            }
+          })
+          .catch((e) => {
+            console.log(e)
+            this.dialogErrorMessage = 'ネットワークエラー'
+          })
+
         this.commission.push({
           date: workData.date,
           commission: workData.commission,
           time: workData.hour * 60 + workData.min,
           memo: workData.memo,
         })
+
         this.editDialog = false
       } else {
         this.dialogErrorMessage = '日付と報酬のnullは受け付けられません'

@@ -44,6 +44,10 @@ $alreadyAddedFlag = SQLfindSome('work_list', [
   ]
 ]);
 
+if ($alreadyAddedFlag && $alreadyAddedFlag['workId']) {
+  SQLdelete('work_list', 'workId', $alreadyAddedFlag['workId']);
+}
+
 SQLinsert('work_list', [
   'workId' => $workId,
   'secretId' => $secretId,
@@ -57,7 +61,7 @@ echo json_encode([
   'status' => 'ok',
   'id' => $id,
   'work' => json_encode($workData),
-  'already' => $alreadyAddedFlag
+  'already' => $alreadyAddedFlag //上書きして消えたもの
 ]);
 /*
 $id = $_SERVER['HTTP_ID'];

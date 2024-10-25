@@ -227,7 +227,8 @@ export default {
             token: this.userStore.userToken,
           },
           {
-            work: workData,
+            work: JSON.stringify(workData),
+            workDate: workData.date.getTime() / 1000,
           },
         )
           .then((e) => {

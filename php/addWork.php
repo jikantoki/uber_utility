@@ -25,7 +25,7 @@ $secretId = idToSecretId($id);
 $token = $_SERVER['HTTP_TOKEN'];
 $workData = json_decode($_POST['work'], true);
 $workDate = $_POST['workDate'];
-$commission = $_POST['commission'];
+$commission = $workData['commission'];
 $memo = $_POST['memo'];
 $time = $workData['hour'] * 60 + $workData['min'];
 /** 未使用なランダムID */

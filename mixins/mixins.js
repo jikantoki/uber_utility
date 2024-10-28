@@ -339,6 +339,21 @@ export default {
         return 0
       }
     },
+    /** 今週のn曜日の日付を返す（Type: Date） */
+    getDayOfWeek(n) {
+      const today = new Date()
+
+      // 今週の日曜日を取得
+      const sunday = today.getDate() - today.getDay()
+
+      // 日数を加算
+      const x = sunday + n
+
+      // 日を設定
+      const dayOfWeek = new Date(today.setDate(x))
+
+      return dayOfWeek
+    },
 
     //ここからは優先度低いやつ
 

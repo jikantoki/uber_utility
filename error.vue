@@ -1,14 +1,15 @@
 <template lang="pug">
-.error-page
+.error-page(style="justify-content: center; height: 100vh; align-items: center;")
   .center
-    .card
-      img.logo-img(src="/icon.png")
+    .card(style="text-align: center;")
+      img.logo-img(src="/icon.png" style="height: 120px;")
       v-card-title.title Error {{ error.statusCode }}
       v-card-subtitle {{ error.message }}
       v-card-text
         span ごめんエラーページ出ちった
-      v-card-actions
-        v-btn(@click="$router.push('/')") Top
+      v-card-actions(style="justify-content: center;")
+        a(href="/" style="color: unset;")
+          v-btn Top
         v-btn(@click="$router.go(-1)") Undo
 </template>
 

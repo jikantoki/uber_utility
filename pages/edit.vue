@@ -12,7 +12,7 @@
           style="height: auto; width: 100%; border-radius: var(--border-radius); color: white;"
           @click="clearWorkData();editDialog=true;editMode=false"
         ) 新規追加
-        table(style="width: 100%;")
+        table(style="width: 100%; white-space: nowrap;")
           thead
             tr
               th 日付

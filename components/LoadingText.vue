@@ -3,9 +3,9 @@ ContentLoader.loading-text(
   :width="width"
   primaryColor="#777777"
   secondaryColor="#bbbbbb"
-  primaryOpacity=0.3
-  secondaryOpacity=0.4
-  speed=1.7
+  :primaryOpacity="Number('0.3')"
+  :secondaryOpacity="Number('0.4')"
+  :speed="Number('1.7')"
   )
 </template>
 

@@ -8,7 +8,9 @@ export default defineNuxtConfig({
       env: process.env,
     },
   },
+
   ssr: true,
+
   app: {
     head: {
       htmlAttrs: {
@@ -39,14 +41,17 @@ export default defineNuxtConfig({
       ],
     },
   },
+
   build: {
     transpile: ['vuetify'],
   },
+
   hooks: {
     'vite:extendConfig': (config) => {
       config.plugins!.push(vuetify())
     },
   },
+
   vite: {
     ssr: {
       noExternal: ['vuetify'],
@@ -55,10 +60,13 @@ export default defineNuxtConfig({
       'process.env.DEBUG': false,
     },
   },
+
   css: [
     '@/assets/main.scss',
     'vuetify/lib/styles/main.sass',
     '@mdi/font/css/materialdesignicons.css',
   ],
+
   modules: ['@pinia/nuxt', '@pinia-plugin-persistedstate/nuxt'],
+  compatibilityDate: '2024-10-28',
 })

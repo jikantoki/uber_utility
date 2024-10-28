@@ -20,7 +20,7 @@
               th 獲得報酬
               th 時給
               th 操作
-          tbody
+          tbody(style="text-align: center;")
             tr(v-for="(work, cnt) in commission")
               td(style="font-weight: unset;") {{ dateToString(work.date) }}
               td(style="font-weight: unset;") {{ ('0' + Math.floor(work.time / 60)).slice(-2) }}時間{{ ('0' + work.time % 60).slice(-2) }}分
@@ -287,11 +287,16 @@ export default {
 
 <style lang="scss" scoped>
 .vertical-table {
+  //firefoxCSSバグる
   writing-mode: vertical-lr;
+  -webkit-writing-mode: vertical-lr;
+  -ms-writing-mode: vertical-lr;
   th,
   td {
     writing-mode: horizontal-tb;
-    height: 1em;
+    -webkit-writing-mode: horizontal-tb;
+    -ms-writing-mode: horizontal-tb;
+    height: 4em;
   }
   th {
     text-align: right;

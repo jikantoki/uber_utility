@@ -42,55 +42,48 @@
   v-dialog(v-model="editDialog" persistent max-width="640px")
     v-card
       v-card-title {{ editMode ? '編集' : '新規追加' }}
-      .editor-form
-        table.px-4.vertical-table(
-          style="width: 100%;"
-        )
-            thead
-              tr
-                th.px-2 日付
-                th.px-2 稼働時間
-                th.px-2 獲得報酬
-                th.px-2 メモ
-            tbody
-              tr
-                td.px-2(style="font-weight: unset;")
-                  .td(style="display: flex; align-items: center;")
-                    v-date-input(
-                      placeholder="稼働日を選択"
-                      v-model="editForm.date"
-                      :disabled="editMode"
-                    )
-                td.px-2(style="font-weight: unset;")
-                  .td(style="display: flex; align-items: center;")
-                    v-number-input(
-                      control-variant="stacked"
-                      v-model="editForm.hour"
-                      :max="23"
-                      :min="0"
-                    )
-                    span.mx-2 時間
-                    v-number-input(
-                      control-variant="stacked"
-                      v-model="editForm.min"
-                      :max="59"
-                      :min="0"
-                    )
-                    span.mx-2 分
-                td.px-2(style="font-weight: unset;")
-                  .td(style="display: flex; align-items: center;")
-                    v-number-input(
-                      control-variant="stacked"
-                      v-model="editForm.commission"
-                      :min="0"
-                    )
-                    span.mx-2 円
-                td.px-2(style="font-weight: unset;")
-                  .td(style="display: flex; align-items: center;")
-                    v-text-field(
-                      placeholder="現在実装中"
-                      v-model="editForm.memo"
-                    )
+      .editor-form.mx-4
+        .form-cell(style="display: flex;")
+          p.th 日付
+          .td(style="display: flex; align-items: center;")
+            v-date-input(
+              placeholder="稼働日を選択"
+              v-model="editForm.date"
+              :disabled="editMode"
+            )
+        .form-cell(style="display: flex;")
+          p.th 稼働時間
+          .td(style="display: flex; align-items: center;")
+            v-number-input(
+              control-variant="stacked"
+              v-model="editForm.hour"
+              :max="23"
+              :min="0"
+            )
+            span.mx-2 時間
+            v-number-input(
+              control-variant="stacked"
+              v-model="editForm.min"
+              :max="59"
+              :min="0"
+            )
+            span.mx-2 分
+        .form-cell(style="display: flex;")
+          p.th 獲得報酬
+          .td(style="display: flex; align-items: center;")
+            v-number-input(
+              control-variant="stacked"
+              v-model="editForm.commission"
+              :min="0"
+            )
+            span.mx-2 円
+        .form-cell(style="display: flex;")
+          p.th メモ
+          .td(style="display: flex; align-items: center;")
+            v-text-field(
+              placeholder="現在実装中"
+              v-model="editForm.memo"
+            )
       .error-message.ma-4.py-2.px-4(
         v-show="dialogErrorMessage"
         style=`
@@ -296,20 +289,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.vertical-table {
-  //firefoxCSSバグる
-  writing-mode: vertical-lr;
-  -webkit-writing-mode: vertical-lr;
-  -ms-writing-mode: tb-lr;
-  th,
-  td {
-    writing-mode: initial;
-    -webkit-writing-mode: initial;
-    -ms-writing-mode: initial;
-    height: 4em;
-  }
-  th {
-    text-align: right;
-  }
+.th {
+  text-align: right;
+  align-content: center;
+  width: 6em;
+  padding-right: 1em;
+}
+.td {
+  width: -webkit-fill-available;
+  width: -moz-available;
 }
 </style>

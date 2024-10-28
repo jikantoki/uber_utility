@@ -277,10 +277,7 @@ export default {
           worklist.forEach((workData) => {
             if (!addFlag) {
               const date = new Date(workData.dateUnixtime * 1000)
-              console.log(date)
-              console.log(this.getDayOfWeek(i))
-              console.log(date - this.getDayOfWeek(i))
-              if (date - this.getDayOfWeek(i) == 0) {
+              if (date - this.getDayOfWeek(7 - i) == 0) {
                 addFlag = true
                 this.commission.push({
                   date: date,
@@ -292,10 +289,9 @@ export default {
               }
             }
           })
-          console.log('aaaaaaaaaa')
           if (!addFlag) {
             this.commission.push({
-              date: this.getDayOfWeek(i),
+              date: this.getDayOfWeek(7 - i),
               workId: null,
               commission: 0,
               time: 0,

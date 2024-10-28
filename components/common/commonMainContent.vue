@@ -91,7 +91,7 @@
                 th 獲得報酬
                 th 時給
             tbody
-              tr(v-for="(work, cnt) in commission")
+              tr(v-for="(work, cnt) in commission" :style="!work.time ? 'opacity: 0.5;' : ''")
                 td(style="font-weight: unset;") {{ dateToString(work.date) }}
                 td(style="font-weight: unset;") {{ ('0' + Math.floor(work.time / 60)).slice(-2) }}時間{{ ('0' + work.time % 60).slice(-2) }}分
                 td(style="font-weight: unset;") {{ work.commission }}円
@@ -116,7 +116,7 @@
                 th 稼働時間
                 th 獲得報酬
             tbody
-              tr(v-for="(work, cnt) in commission")
+              tr(v-for="(work, cnt) in commission" :style="!work.time ? 'opacity: 0.5;' : ''")
                 td(style="font-weight: unset;") {{ dateToString(work.date) }}
                 td(style="font-weight: unset;") {{ ('0' + Math.floor(work.time / 60)).slice(-2) }}時間{{ ('0' + work.time % 60).slice(-2) }}分
                 td(style="font-weight: unset;") {{ work.commission }}円
@@ -140,7 +140,7 @@
                 th 日付
                 th 獲得報酬
             tbody
-              tr(v-for="(work, cnt) in commission")
+              tr(v-for="(work, cnt) in commission" :style="!work.time ? 'opacity: 0.5;' : ''")
                 td(style="font-weight: unset;") {{ cnt + 1 }}
                 td(style="font-weight: unset;") {{ dateToString(work.date) }}
                 td(style="font-weight: unset;") {{ work.commission }}円
@@ -164,7 +164,7 @@
                 th 日付
                 th 時給
             tbody
-              tr(v-for="(work, cnt) in commission")
+              tr(v-for="(work, cnt) in commission" :style="!work.time ? 'opacity: 0.5;' : ''")
                 td(style="font-weight: unset;") {{ cnt + 1 }}
                 td(style="font-weight: unset;") {{ dateToString(work.date) }}
                 td(style="font-weight: unset;") {{ calcHourly(work.commission, work.time) }}円
@@ -188,7 +188,7 @@
                 th 日付
                 th 稼働時間
             tbody
-              tr(v-for="(work, cnt) in commission")
+              tr(v-for="(work, cnt) in commission" :style="!work.time ? 'opacity: 0.5;' : ''")
                 td(style="font-weight: unset;") {{ cnt + 1 }}
                 td(style="font-weight: unset;") {{ dateToString(work.date) }}
                 td(style="font-weight: unset;") {{ ('0' + Math.floor(work.time / 60)).slice(-2) }}時間{{ ('0' + work.time % 60).slice(-2) }}分
@@ -259,14 +259,10 @@ export default {
       worklist.sort((a, b) => {
         return b.dateUnixtime - a.dateUnixtime
       })
-      worklist.forEach((workData) => {
-        const date = new Date(workData.dateUnixtime * 1000)
 
-        //allHistoryがfalseなら、今週の収益しか表示させない
-        if (
-          this.allHistory ||
-          (date - this.getDayOfWeek(0) >= 0 && this.getDayOfWeek(8) - date > 0)
-        ) {
+      if (this.allHistory) {
+        worklist.forEach((workData) => {
+          const date = new Date(workData.dateUnixtime * 1000)
           this.commission.push({
             date: date,
             workId: workData.workId,
@@ -274,8 +270,40 @@ export default {
             time: workData.time,
             memo: workData.memo,
           })
-        }
-      })
+        })
+      } else {
+        ;[...Array(7)].map((_, i) => {
+          let addFlag = false
+          worklist.forEach((workData) => {
+            if (!addFlag) {
+              const date = new Date(workData.dateUnixtime * 1000)
+              console.log(date)
+              console.log(this.getDayOfWeek(i))
+              console.log(date - this.getDayOfWeek(i))
+              if (date - this.getDayOfWeek(i) == 0) {
+                addFlag = true
+                this.commission.push({
+                  date: date,
+                  workId: workData.workId,
+                  commission: workData.commission,
+                  time: workData.time,
+                  memo: workData.memo,
+                })
+              }
+            }
+          })
+          console.log('aaaaaaaaaa')
+          if (!addFlag) {
+            this.commission.push({
+              date: this.getDayOfWeek(i),
+              workId: null,
+              commission: 0,
+              time: 0,
+              memo: null,
+            })
+          }
+        })
+      }
     }
 
     let cnt = 0 //実際に稼働した日数をカウント

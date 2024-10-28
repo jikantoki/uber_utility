@@ -341,7 +341,15 @@ export default {
     },
     /** 今週のn曜日の日付を返す（Type: Date） */
     getDayOfWeek(n) {
-      const today = new Date()
+      const now = new Date()
+      const today = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate(),
+        0,
+        0,
+        0,
+      )
 
       // 今週の日曜日を取得
       const sunday = today.getDate() - today.getDay()

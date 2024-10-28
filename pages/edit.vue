@@ -12,7 +12,7 @@
           style="height: auto; width: 100%; border-radius: var(--border-radius); color: white;"
           @click="clearWorkData();editDialog=true;editMode=false"
         ) 新規追加
-        table(style="width: 100%; white-space: nowrap;")
+        table(style="width: 100%; white-space: nowrap;" v-show="!loading && commission[0]")
           thead
             tr
               th 日付
@@ -30,9 +30,15 @@
                 v-btn.my-0(color="var(--accent-color)" style="color: white;" @click="editWorkData(cnt)" icon="mdi-pencil" size="x-small")
                 v-btn.my-0(color="var(--color-error)" style="color: white;" @click="deleteWorkData(cnt)" icon="mdi-delete" size="x-small")
         p.text-h5.ma-4(
-          v-if="!commission[0]"
+          v-if="!commission[0] && !loading"
           style="text-align: center;"
         ) データが登録されていません！
+        v-progress-circular(
+          v-if="loading"
+          indeterminate
+          size=100
+          style="display: block; margin: 64px auto;"
+        )
   v-dialog(v-model="editDialog" persistent max-width="640px")
     v-card
       v-card-title {{ editMode ? '編集' : '新規追加' }}
@@ -130,6 +136,8 @@ export default {
   },
   data() {
     return {
+      /** ページ読み込み中フラグ */
+      loading: true,
       /** 編集ダイアログ開いているか？ */
       editDialog: false,
       editForm: {
@@ -174,6 +182,8 @@ export default {
         memo: workData.memo,
       })
     })
+
+    this.loading = false
   },
   methods: {
     clearWorkData: function () {

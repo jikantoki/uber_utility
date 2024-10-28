@@ -193,15 +193,14 @@
                 td(style="font-weight: unset;") {{ dateToString(work.date) }}
                 td(style="font-weight: unset;") {{ ('0' + Math.floor(work.time / 60)).slice(-2) }}時間{{ ('0' + work.time % 60).slice(-2) }}分
       .edit-work-button(style="display: flex; align-self: center;" v-if="!allHistory")
-        a.ma-2(
-          v-if="userStore && userStore.userId"
-          href="/history"
-        )
+        .ma-2
           v-btn.ma-0(
+            v-if="userStore && userStore.userId"
             style="border-radius: var(--border-radius);color: white;"
             size="large"
             prepend-icon="mdi-history"
             color="var(--accent-color)"
+            @click="a('/history')"
           ) 稼働履歴...
   </template>
 

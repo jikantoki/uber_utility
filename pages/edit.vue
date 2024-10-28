@@ -27,8 +27,8 @@
               td(style="font-weight: unset;") {{ work.commission }}円
               td(style="font-weight: unset;") {{ calcHourly(work.commission, work.time) }}円
               td(style="font-weight: unset; max-width: 5em;")
-                v-btn.my-0(color="var(--accent-color)" style="color: white;" @click="editWorkData(cnt)") 編集
-                v-btn.my-0(color="var(--color-error)" style="color: white;" @click="deleteWorkData(cnt)") 削除
+                v-btn.my-0(color="var(--accent-color)" style="color: white;" @click="editWorkData(cnt)" icon="mdi-pencil" size="x-small")
+                v-btn.my-0(color="var(--color-error)" style="color: white;" @click="deleteWorkData(cnt)" icon="mdi-delete" size="x-small")
         p.text-h5.ma-4(
           v-if="!commission[0]"
           style="text-align: center;"

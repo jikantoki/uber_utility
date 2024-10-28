@@ -300,12 +300,12 @@ export default {
   //firefoxCSSバグる
   writing-mode: vertical-lr;
   -webkit-writing-mode: vertical-lr;
-  -ms-writing-mode: vertical-lr;
+  -ms-writing-mode: tb-lr;
   th,
   td {
-    writing-mode: horizontal-tb;
-    -webkit-writing-mode: horizontal-tb;
-    -ms-writing-mode: horizontal-tb;
+    writing-mode: initial;
+    -webkit-writing-mode: initial;
+    -ms-writing-mode: initial;
     height: 4em;
   }
   th {

@@ -22,6 +22,7 @@
         )
       footer.pa-16#footer
         common-footer
+    commonBottomBar
   v-dialog(v-model="dialog" max-width="500")
     v-card
       v-card-title {{ dialogTitle }}
@@ -46,6 +47,7 @@ import mixins from '~/mixins/mixins'
 import webpush from '~/js/webpush'
 import splash from '~/components/common/commonSplash'
 import commonBar from '~/components/common/commonBar.vue'
+import commonBottomBar from '~/components/common/commonBottomBar.vue'
 
 export default {
   /**
@@ -60,6 +62,7 @@ export default {
     commonFooter: commonFooter,
     splash: splash,
     commonBar,
+    commonBottomBar,
   },
   mixins: [mixins],
   /**

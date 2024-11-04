@@ -60,6 +60,7 @@ $breakpoints: (
   width: 100%;
   text-align: center;
   overflow: hidden;
+  z-index: 10;
   @include mq('smartPhone') {
   }
   .position-relative {

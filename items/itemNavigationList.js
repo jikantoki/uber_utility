@@ -1,12 +1,12 @@
 export default [
   {
-    name: 'ABOUT',
-    url: '/about',
-    icon: 'mdi-information-outline',
+    name: '設定',
+    url: '/settings',
+    icon: 'mdi-cog',
   },
   {
-    name: 'Vuetify',
-    url: '/vuetify',
-    icon: 'mdi-vuejs',
+    name: 'About',
+    url: '/about',
+    icon: 'mdi-information',
   },
 ]

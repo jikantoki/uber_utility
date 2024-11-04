@@ -44,7 +44,7 @@
       p.text-h5.ma-8(
         v-show="!loading"
         style="text-align: center;"
-      ) 今週の稼働履歴はありません！
+      ) 稼働履歴はありません！
       v-progress-circular(
         v-show="loading"
         indeterminate
@@ -54,13 +54,24 @@
       .edit-work-button(style="display: flex; align-self: center;")
         a.ma-2(
           href="/history"
+          v-if="!allHistory"
         )
           v-btn.ma-0(
             style="border-radius: var(--border-radius);color: white;"
             size="large"
             prepend-icon="mdi-history"
             color="var(--accent-color)"
-          ) 稼働履歴...
+          ) 全期間
+        a.ma-2(
+          href="/"
+          v-if="allHistory"
+        )
+          v-btn.ma-0(
+            style="border-radius: var(--border-radius);color: white;"
+            size="large"
+            prepend-icon="mdi-calendar-today"
+            color="var(--accent-color)"
+          ) 今週
     v-card.content(v-else)
       p.text-h6.mb-4 稼働グラフ
       v-tabs(active-color="red" v-model="tab")
@@ -192,16 +203,24 @@
                 td(style="font-weight: unset;") {{ cnt + 1 }}
                 td(style="font-weight: unset;") {{ dateToString(work.date) }}
                 td(style="font-weight: unset;") {{ ('0' + Math.floor(work.time / 60)).slice(-2) }}時間{{ ('0' + work.time % 60).slice(-2) }}分
-      .edit-work-button(style="display: flex; align-self: center;" v-if="!allHistory")
-        .ma-2
+      .edit-work-button(style="display: flex; align-self: center;")
+        .ma-2(v-if="userStore && userStore.userId")
           v-btn.ma-0(
-            v-if="userStore && userStore.userId"
+            v-if="!allHistory"
             style="border-radius: var(--border-radius);color: white;"
             size="large"
             prepend-icon="mdi-history"
             color="var(--accent-color)"
             @click="a('/history')"
-          ) 稼働履歴...
+          ) 全期間
+          v-btn.ma-0(
+            v-if="allHistory"
+            style="border-radius: var(--border-radius);color: white;"
+            size="large"
+            prepend-icon="mdi-calendar-today"
+            color="var(--accent-color)"
+            @click="a('/')"
+          ) 今週
   </template>
 
 <script>

@@ -4,13 +4,16 @@
     style="height: 100%;"
   )
     .nav-buttons
-      a(
-        v-for="button of buttons"
-        :href="button.href"
+      .nav-button-div(
+        v-for="(button,count) of buttons"
+        ref="buttons"
         v-ripple
       )
-        v-icon {{ button.icon }}
-        p {{ button.name }}
+        a.nav-a(
+          :href="button.href"
+        )
+          v-icon {{ button.icon }}
+          p {{ button.name }}
 </template>
 
 <script>
@@ -48,6 +51,21 @@ export default {
       ],
     }
   },
+  watch: {
+    $route: {
+      handler: function (to) {
+        if (this.$refs.buttons) {
+          this.buttons.forEach((button, count) => {
+            this.$refs.buttons[count].classList.remove('active-button')
+            if (to.path == button.href) {
+              this.$refs.buttons[count].classList.add('active-button')
+            }
+          })
+        }
+      },
+      immediate: true,
+    },
+  },
 }
 </script>
 
@@ -68,17 +86,26 @@ export default {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    a {
-      color: white;
-      text-decoration: none;
-      width: -webkit-fill-available;
+    .nav-button-div {
       text-align: center;
-      i {
-        font-size: 3em;
+      width: -webkit-fill-available;
+      opacity: 0.6;
+      .nav-a {
+        display: block;
+        color: white;
+        text-decoration: none;
+        width: 100%;
+        i {
+          font-size: 3em;
+        }
+        p {
+          font-size: 1em;
+        }
       }
-      p {
-        font-size: 1em;
-      }
+    }
+    .active-button {
+      opacity: 1;
+      font-weight: bold;
     }
   }
 }

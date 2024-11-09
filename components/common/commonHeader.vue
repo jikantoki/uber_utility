@@ -1,121 +1,122 @@
 <template lang="pug">
 .header
-  v-navigation-drawer.pa-0.nav-drawer(v-model="drawer" fixed temporary style="overflow: hidden;")
-    v-list(nav dense)
-      v-item-group(v-model="group" active-class="deep-purple-text text--accent-4")
-        a.header-list(href="/login" v-if="!userStore || !userStore.userId")
+  ClientOnly
+    v-navigation-drawer.pa-0.nav-drawer(v-model="drawer" fixed temporary style="overflow: hidden;")
+      v-list(nav dense)
+        v-item-group(v-model="group" active-class="deep-purple-text text--accent-4")
+          a.header-list(href="/login" v-if="!userStore || !userStore.userId")
+            v-list-item.pa-4(link)
+              .v-item
+                v-icon(style="opacity:0.7") mdi-account-outline
+                p.nav ログイン
+          a.header-list(:href="`/${userStore.userId}`" v-if="userStore && userStore.userId")
+            v-list-item.pa-4(link)
+              .v-item
+                img.menu-profile-img.nav-img(
+                  v-if="!(userStore.profile && userStore.profile.icon)"
+                  src="/account_default.jpg")
+                img.menu-profile-img.nav-img(
+                  v-if="userStore.profile && userStore.profile.icon"
+                  :src="userStore.profile.icon")
+                .menu-profile-flex
+                  p.nav.profile-name(v-if="userStore.profile && userStore.profile.name") {{ userStore.profile.name }}
+                  p.nav.profile-name(v-if="userStore.profile && !userStore.profile.name && userStore.profile.userId") {{ userStore.profile.userId }}
+                  p.nav.profile-id(v-if="userStore.profile") @{{ userStore.profile.userId }}
+          v-divider(style="opacity:0.3")
+          a.header-list(:href="`/${userStore.userId}`" v-if="userStore && userStore.userId")
+            v-list-item.pa-4(link)
+              .v-item
+                v-icon(style="opacity:0.7") mdi-account-outline
+                p.nav {{ $t('header.profile') }}
+          a.header-list(v-for="navigationItem in NavigationList" :href="navigationItem.url")
+            v-list-item.pa-4(link)
+              .v-item
+                v-icon(style="opacity:0.7") {{ navigationItem.icon }}
+                p.nav {{ navigationItem.name }}
+          v-divider(style="opacity:0.3")
+          a.header-list(v-for="navigationItem in infoList" :href="navigationItem.url")
+            v-list-item.pa-4(link)
+              .v-item
+                v-icon(style="opacity:0.7") {{ navigationItem.icon }}
+                p.nav {{ navigationItem.name }}
+          v-divider(style="opacity:0.3")
+          v-list-item.pa-4
+            .v-item
+              v-icon(style="opacity:0.7") mdi-theme-light-dark
+              p.nav {{ $t('header.theme') }}
+              v-switch(v-model="isDarkTheme")
+          v-list-item.pa-4(link style="position: relative;")
+            .v-item
+              v-icon(style="opacity:0.7") mdi-translate-variant
+              p.nav {{ $t('header.language') }}
+              v-icon(style="opacity:0.7") mdi-menu-right
+            v-menu(activator="parent" attach)
+              v-list
+                v-list-item(
+                  link
+                  v-for="locale in availableLocales"
+                  :key="locale"
+                  @click="changeLocale(locale)"
+                  )
+                  v-list-item-title {{ arrangeLocale(locale) }}
+      template(v-slot:append)
+        a.header-list(v-if="userStore && userStore.userId")
           v-list-item.pa-4(link)
             .v-item
-              v-icon(style="opacity:0.7") mdi-account-outline
-              p.nav ログイン
-        a.header-list(:href="`/${userStore.userId}`" v-if="userStore && userStore.userId")
-          v-list-item.pa-4(link)
-            .v-item
-              img.menu-profile-img.nav-img(
-                v-if="!(userStore.profile && userStore.profile.icon)"
-                src="/account_default.jpg")
-              img.menu-profile-img.nav-img(
-                v-if="userStore.profile && userStore.profile.icon"
-                :src="userStore.profile.icon")
-              .menu-profile-flex
-                p.nav.profile-name(v-if="userStore.profile && userStore.profile.name") {{ userStore.profile.name }}
-                p.nav.profile-name(v-if="userStore.profile && !userStore.profile.name && userStore.profile.userId") {{ userStore.profile.userId }}
-                p.nav.profile-id(v-if="userStore.profile") @{{ userStore.profile.userId }}
-        v-divider(style="opacity:0.3")
-        a.header-list(:href="`/${userStore.userId}`" v-if="userStore && userStore.userId")
-          v-list-item.pa-4(link)
-            .v-item
-              v-icon(style="opacity:0.7") mdi-account-outline
-              p.nav {{ $t('header.profile') }}
-        a.header-list(v-for="navigationItem in NavigationList" :href="navigationItem.url")
-          v-list-item.pa-4(link)
-            .v-item
-              v-icon(style="opacity:0.7") {{ navigationItem.icon }}
-              p.nav {{ navigationItem.name }}
-        v-divider(style="opacity:0.3")
-        a.header-list(v-for="navigationItem in infoList" :href="navigationItem.url")
-          v-list-item.pa-4(link)
-            .v-item
-              v-icon(style="opacity:0.7") {{ navigationItem.icon }}
-              p.nav {{ navigationItem.name }}
-        v-divider(style="opacity:0.3")
-        v-list-item.pa-4
-          .v-item
-            v-icon(style="opacity:0.7") mdi-theme-light-dark
-            p.nav {{ $t('header.theme') }}
-            v-switch(v-model="isDarkTheme")
-        v-list-item.pa-4(link style="position: relative;")
-          .v-item
-            v-icon(style="opacity:0.7") mdi-translate-variant
-            p.nav {{ $t('header.language') }}
-            v-icon(style="opacity:0.7") mdi-menu-right
-          v-menu(activator="parent" attach)
+              v-icon(style="opacity:0.7") mdi-dots-vertical
+              p.nav {{ $t('header.showMore') }}
+              v-icon(style="opacity:0.7") mdi-menu-right
+          v-menu(activator="parent" offset-x)
             v-list
-              v-list-item(
-                link
-                v-for="locale in availableLocales"
-                :key="locale"
-                @click="changeLocale(locale)"
-                )
-                v-list-item-title {{ arrangeLocale(locale) }}
-    template(v-slot:append)
-      a.header-list(v-if="userStore && userStore.userId")
-        v-list-item.pa-4(link)
-          .v-item
-            v-icon(style="opacity:0.7") mdi-dots-vertical
-            p.nav {{ $t('header.showMore') }}
-            v-icon(style="opacity:0.7") mdi-menu-right
-        v-menu(activator="parent" offset-x)
+              v-list-item.logout(link @click="logoutDialog()")
+                v-list-item-title ログアウト
+    v-app-bar
+      template(v-slot:append)
+        v-btn(icon="mdi-magnify" @click="headerSearchDialog = true")
+        v-menu
+          template(v-slot:activator="{props}")
+            v-btn(icon v-bind="props" style="position: relative;")
+              v-icon mdi-dots-vertical
           v-list
-            v-list-item.logout(link @click="logoutDialog()")
-              v-list-item-title ログアウト
-  v-app-bar
-    template(v-slot:append)
-      v-btn(icon="mdi-magnify" @click="headerSearchDialog = true")
-      v-menu
-        template(v-slot:activator="{props}")
-          v-btn(icon v-bind="props" style="position: relative;")
-            v-icon mdi-dots-vertical
-        v-list
-          v-list-item(link @click="a('/rule')")
-            v-list-item-title 利用規約
-    v-app-bar-nav-icon(v-if="isRoot && (!userStore || !userStore.profile || !userStore.profile.userId)" @click="toggleDrawer()")
-    .nav-icon(v-if="isRoot && userStore && userStore.profile && userStore.profile.userId")
-      .nav-round(@click="toggleDrawer()" v-ripple)
-        img.nav-img(
-          v-if="!(userStore.profile && userStore.profile.icon)"
-          src="/account_default.jpg")
-        img.nav-img(
-          v-if="userStore.profile && userStore.profile.icon"
-          :src="userStore.profile.icon")
-    v-btn(v-if="!isRoot" icon="mdi-keyboard-backspace" @click="back()")
-    v-app-bar-title {{ metaStore.title }}
-  v-dialog(v-model="dialog" max-width="500")
-    v-card
-      v-card-title {{ dialogTitle }}
-      v-card-text(v-html="dialogText")
-      v-card-actions(v-if="dialogActions")
-        v-spacer
-        v-btn(
-          v-for="btn, key in dialogActions"
-          :key="key"
-          @click="btn.action()"
-          v-bind:class="[key === dialogActions.length - 1 ? 'btn-default' : 'btn-other']"
-          ) {{ btn.value }}
-  v-dialog(v-model="headerSearchDialog" max-width="500")
-    v-card
-      v-card-text
-        v-text-field(
-          v-model="searchText"
-          placeholder="今日の天気"
-          label="検索"
-          ref="searchBox"
-          style="width: 100%;display: contents;"
-          append-inner-icon="mdi-magnify"
-          @click:append-inner="console.log('search!!!')"
-          @keydown.enter="console.log('search!!!')"
-          clearable
-          )
+            v-list-item(link @click="a('/rule')")
+              v-list-item-title 利用規約
+      v-app-bar-nav-icon(v-if="isRoot && (!userStore || !userStore.profile || !userStore.profile.userId)" @click="toggleDrawer()")
+      .nav-icon(v-if="isRoot && userStore && userStore.profile && userStore.profile.userId")
+        .nav-round(@click="toggleDrawer()" v-ripple)
+          img.nav-img(
+            v-if="!(userStore.profile && userStore.profile.icon)"
+            src="/account_default.jpg")
+          img.nav-img(
+            v-if="userStore.profile && userStore.profile.icon"
+            :src="userStore.profile.icon")
+      v-btn(v-if="!isRoot" icon="mdi-keyboard-backspace" @click="back()")
+      v-app-bar-title {{ metaStore.title }}
+    v-dialog(v-model="dialog" max-width="500")
+      v-card
+        v-card-title {{ dialogTitle }}
+        v-card-text(v-html="dialogText")
+        v-card-actions(v-if="dialogActions")
+          v-spacer
+          v-btn(
+            v-for="btn, key in dialogActions"
+            :key="key"
+            @click="btn.action()"
+            v-bind:class="[key === dialogActions.length - 1 ? 'btn-default' : 'btn-other']"
+            ) {{ btn.value }}
+    v-dialog(v-model="headerSearchDialog" max-width="500")
+      v-card
+        v-card-text
+          v-text-field(
+            v-model="searchText"
+            placeholder="今日の天気"
+            label="検索"
+            ref="searchBox"
+            style="width: 100%;display: contents;"
+            append-inner-icon="mdi-magnify"
+            @click:append-inner="console.log('search!!!')"
+            @keydown.enter="console.log('search!!!')"
+            clearable
+            )
 </template>
 
 <script>

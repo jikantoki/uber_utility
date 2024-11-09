@@ -7,19 +7,20 @@
     v-main#main
       .center.main-content
         nuxt-page
-      common-bar(
-        v-if="!userStore.userId"
-        title="ログインして、もっと便利に"
-        subTitle="UberUTLにログインし、通知の挙動をチェックしてみよう"
-        :buttons="commonBarButtons"
-        )
-      common-bar(
-        v-if="userStore.userId && isDisplayCommonPushButtons"
-        title="最新の情報を入手しよう"
-        subTitle="通知の送信を許可することで、最新情報を入手できます。"
-        :buttons="commonBarPushButtons"
-        @clicked="pushFlow()"
-        )
+      ClientOnly
+        common-bar(
+          v-if="!userStore.userId"
+          title="ログインして、もっと便利に"
+          subTitle="UberUTLにログインし、通知の挙動をチェックしてみよう"
+          :buttons="commonBarButtons"
+          )
+        common-bar(
+          v-if="userStore.userId && isDisplayCommonPushButtons"
+          title="最新の情報を入手しよう"
+          subTitle="通知の送信を許可することで、最新情報を入手できます。"
+          :buttons="commonBarPushButtons"
+          @clicked="pushFlow()"
+          )
       footer#footer
         common-footer
     commonBottomBar
@@ -109,31 +110,14 @@ export default {
   },
   mounted() {
     PackageJson.name = Functions.ifEnglishStartUpper(PackageJson.name)
-    /*
-      this.sendAjax('/api/test/object.html', {
-        goodbye: 'バイバ～イ!yeah',
-        sayMeow: 'みゃお'
-      })
-        .then((value) => {
-          console.log(value)
-        })
+    setTimeout(() => {
+      webpush
+        .set()
+        .then((e) => {})
         .catch((e) => {
-          console.warn(e)
+          this.isDisplayCommonPushButtons = true
         })
-      this.sendAjax('/api/test/string.html')
-        .then((value) => {
-          console.log(value)
-        })
-        .catch((e) => {
-          console.warn(e)
-        })
-      */
-    webpush
-      .set()
-      .then((e) => {})
-      .catch((e) => {
-        this.isDisplayCommonPushButtons = true
-      })
+    }, 1000)
 
     //v-menu表示バグ一時的な修正
     setInterval(() => {

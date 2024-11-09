@@ -88,7 +88,7 @@
               line-width=1
               padding=8
               stroke-linecap="round"
-              smooth=10
+              smooth
               auto-draw
               show-labels
               :labels="dateHistory"
@@ -114,7 +114,7 @@
               line-width=1
               padding=8
               stroke-linecap="round"
-              smooth=10
+              smooth
               auto-draw
               show-labels
               :labels="dateHistory"
@@ -138,7 +138,7 @@
               line-width=1
               padding=8
               stroke-linecap="round"
-              smooth=10
+              smooth
               auto-draw
               show-labels
               :labels="dateHistory"
@@ -162,7 +162,7 @@
               line-width=1
               padding=8
               stroke-linecap="round"
-              smooth=10
+              smooth
               auto-draw
               show-labels
               :labels="dateHistory"
@@ -186,7 +186,7 @@
               line-width=1
               padding=8
               stroke-linecap="round"
-              smooth=10
+              smooth
               auto-draw
               show-labels
               :labels="dateHistory"

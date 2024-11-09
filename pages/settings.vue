@@ -1,6 +1,6 @@
 <template lang="pug">
 .about
-  h1 This is an about page
+  h1 設定…やってっちゃう？w
   adsense
 </template>
 
@@ -13,11 +13,11 @@ export default {
   mixins: [mixins],
   setup() {
     //サーバーサイドで仮のタイトルを設定、mountedで言語ごとに再設定する
-    Setup.setTitle('About')
-    Setup.setDescription('UberUTLについて')
+    Setup.setTitle('Settings')
+    Setup.setDescription('設定')
   },
   mounted() {
-    this.setTitle('About')
+    this.setTitle('Settings')
   },
 }
 </script>

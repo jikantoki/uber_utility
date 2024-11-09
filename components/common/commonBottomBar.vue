@@ -36,7 +36,7 @@ export default {
         {
           name: '収益',
           icon: 'mdi-cash',
-          href: '/commission',
+          href: '/analytics',
         },
         {
           name: '燃費',

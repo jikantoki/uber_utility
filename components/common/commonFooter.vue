@@ -1,6 +1,6 @@
 <template lang="pug">
 .center
-  .copyRight &copy; 2019 - {{ new Date().getFullYear() }} エノキ電気
+  .copyRight.my-16 &copy; 2019 - {{ new Date().getFullYear() }} エノキ電気
 .hitsuyou-mudana-space
 </template>
 
@@ -13,7 +13,7 @@ export default {
 
 <style lang="scss" scoped>
 .hitsuyou-mudana-space {
-  height: 3em;
+  height: 5em;
   width: 100%;
 }
 </style>

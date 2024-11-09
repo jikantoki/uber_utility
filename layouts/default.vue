@@ -20,7 +20,7 @@
         :buttons="commonBarPushButtons"
         @clicked="pushFlow()"
         )
-      footer.pa-16#footer
+      footer#footer
         common-footer
     commonBottomBar
   v-dialog(v-model="dialog" max-width="500")
@@ -455,7 +455,7 @@ body {
     #footer {
       bottom: 0;
       width: 100%;
-      height: 100px !important;
+      min-height: 100px !important;
       background-color: rgb(var(--v-theme-surface));
     }
   }

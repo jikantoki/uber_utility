@@ -12,7 +12,7 @@
                 p.text-h7.ml-2 {{ button.name }}
                 p.text-h7.right.pr-4 >
           hr.ma-0
-      .text-h5 利益
+      .text-h5 利益（収支と変わらないかも？）
       .contents
         .other-content(v-for="button of riekiButtons")
           .a-cover(v-ripple)
@@ -81,7 +81,7 @@ export default {
           mode: 'day',
         },
         {
-          name: '曜日別収支',
+          name: '曜日別収支（開発中）',
           icon: 'mdi-calendar-week-begin',
           mode: 'dayOfWeek',
         },

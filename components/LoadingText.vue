@@ -5,7 +5,7 @@ ContentLoader.loading-text(
   secondaryColor="#bbbbbb"
   :primaryOpacity="Number('0.3')"
   :secondaryOpacity="Number('0.4')"
-  :speed="Number('1.7')"
+  :speed="Number('3')"
   )
 </template>
 

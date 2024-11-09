@@ -181,7 +181,7 @@ export default {
   methods: {
     clearWorkData: function () {
       this.editForm = {
-        date: null,
+        date: this.getToday(),
         hour: null,
         min: null,
         commission: null,

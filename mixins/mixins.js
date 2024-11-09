@@ -339,8 +339,8 @@ export default {
         return 0
       }
     },
-    /** 今週のn曜日の日付を返す（Type: Date） */
-    getDayOfWeek(n) {
+    /** 今日の0時0分0秒を取得 */
+    getToday() {
       const now = new Date()
       const today = new Date(
         now.getFullYear(),
@@ -350,6 +350,11 @@ export default {
         0,
         0,
       )
+      return today
+    },
+    /** 今週のn曜日の日付を返す（Type: Date） */
+    getDayOfWeek(n) {
+      const today = this.getToday()
 
       // 今週の日曜日を取得
       const sunday = today.getDate() - today.getDay()

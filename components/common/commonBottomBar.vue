@@ -54,16 +54,23 @@ export default {
   watch: {
     $route: {
       handler: function (to) {
-        if (this.$refs.buttons) {
-          this.buttons.forEach((button, count) => {
-            this.$refs.buttons[count].classList.remove('active-button')
-            if (to.path == button.href) {
-              this.$refs.buttons[count].classList.add('active-button')
-            }
-          })
-        }
+        this.buttonAddClass(to.path)
       },
-      immediate: true,
+    },
+  },
+  mounted() {
+    this.buttonAddClass(location.pathname)
+  },
+  methods: {
+    buttonAddClass: function (toUrl) {
+      if (this.$refs.buttons) {
+        this.buttons.forEach((button, count) => {
+          this.$refs.buttons[count].classList.remove('active-button')
+          if (toUrl == button.href) {
+            this.$refs.buttons[count].classList.add('active-button')
+          }
+        })
+      }
     },
   },
 }

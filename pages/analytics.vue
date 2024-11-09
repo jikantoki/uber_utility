@@ -6,7 +6,7 @@
       .contents
         .other-content(v-for="button of shushiButtons")
           .a-cover(v-ripple)
-            a.content-a(@click="activeDialog=true")
+            a.content-a(@click="openData(button.mode)")
               .button-inner.pl-4.py-4
                 v-icon {{ button.icon }}
                 p.text-h7.ml-2 {{ button.name }}
@@ -16,16 +16,18 @@
       .contents
         .other-content(v-for="button of riekiButtons")
           .a-cover(v-ripple)
-            a.content-a(@click="activeDialog=true")
+            a.content-a
               .button-inner.pl-4.py-4
                 v-icon {{ button.icon }}
                 p.text-h7.ml-2 {{ button.name }}
                 p.text-h7.right.pr-4 >
           hr.ma-0
   v-dialog(v-model="activeDialog" max-width="640px")
-    v-card
+    v-card(:title="dialogTitle")
       .analytics-item.my-4.mx-6
-        commonAnalytics(:data="commission[0]")
+        .vfor-analytics(v-for="data of workData")
+          commonAnalytics(:data="data" :mode="mode")
+          hr.my-2(style="opacity: 0.3")
         .details.mt-4
           .detail(v-for="detail in detailList")
             p {{ detail.title }}:
@@ -61,27 +63,27 @@ export default {
         {
           name: '生涯収支',
           icon: 'mdi-heart',
-          href: '/settings',
+          mode: 'all',
         },
         {
           name: '年別収支',
           icon: 'mdi-calendar-expand-horizontal',
-          href: '/settings',
+          mode: 'year',
         },
         {
           name: '月別収支',
           icon: 'mdi-moon-waning-crescent',
-          href: '/settings',
+          mode: 'month',
         },
         {
           name: '日別収支',
           icon: 'mdi-sun-clock',
-          href: '/settings',
+          mode: 'day',
         },
         {
           name: '曜日別収支',
           icon: 'mdi-calendar-week-begin',
-          href: '/settings',
+          mode: 'dayOfWeek',
         },
       ],
       riekiButtons: [
@@ -127,10 +129,16 @@ export default {
           unit: '円',
         },
       },
+      /** propで渡す用データ */
+      workData: [],
       /** 稼働実績リスト */
       commission: [],
       /** ダイアログ開くフラグ */
       activeDialog: false,
+      /** ダイアログのタイトル */
+      dialogTitle: '',
+      /** 統計の表示モード */
+      mode: null,
     }
   },
   async mounted() {
@@ -145,12 +153,93 @@ export default {
       const worklist = JSON.parse(getWork.body.work)
 
       worklist.sort((a, b) => {
-        return b.dateUnixtime - a.dateUnixtime
+        return a.dateUnixtime - b.dateUnixtime
+      })
+      worklist.forEach((work, index) => {
+        worklist[index].date = new Date(work.dateUnixtime * 1000)
+        worklist[index].year = work.date.getFullYear()
+        worklist[index].month = work.date.getMonth()
+        worklist[index].dayOfWeek = work.date.getDay()
       })
 
       this.commission = worklist
-      console.log(worklist)
     }
+  },
+  methods: {
+    /** データを開く */
+    openData(mode) {
+      this.workData = []
+      this.mode = mode
+      switch (mode) {
+        case 'all':
+          this.dialogTitle = '生涯収支'
+          this.workData[0] = {
+            commission: 0,
+            time: 0,
+          }
+          this.commission.forEach((data) => {
+            this.workData[0].commission += data.commission
+            this.workData[0].time += data.time
+          })
+          break
+        case 'month':
+          this.dialogTitle = '月別収支'
+          this.commission.forEach((data) => {
+            let findFlag = false
+            this.workData.forEach((work, index) => {
+              //年と月が同じなら統合
+              if (
+                work.year == data.year &&
+                work.month == data.month &&
+                !findFlag
+              ) {
+                this.workData[index] = {
+                  commission: work.commission + data.commission,
+                  date: work.date,
+                  dateUnixtime: work.dateUnixtime,
+                  year: work.year,
+                  month: work.month,
+                  time: work.time,
+                }
+                findFlag = true
+              }
+            })
+            if (!findFlag) {
+              this.workData.push(data)
+            }
+          })
+          break
+        case 'year':
+          this.dialogTitle = '年別収支'
+          this.commission.forEach((data) => {
+            let findFlag = false
+            this.workData.forEach((work, index) => {
+              //年が同じなら統合
+              if (work.year == data.year && !findFlag) {
+                this.workData[index] = {
+                  commission: work.commission + data.commission,
+                  date: work.date,
+                  dateUnixtime: work.dateUnixtime,
+                  year: work.year,
+                  month: work.month,
+                  time: work.time,
+                }
+                findFlag = true
+              }
+            })
+            if (!findFlag) {
+              this.workData.push(data)
+            }
+          })
+          break
+        case 'day':
+        default:
+          this.dialogTitle = '日付別収支'
+          this.workData = this.commission
+          break
+      }
+      this.activeDialog = true
+    },
   },
 }
 </script>

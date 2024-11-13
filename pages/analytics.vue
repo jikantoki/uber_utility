@@ -28,10 +28,6 @@
         .vfor-analytics(v-for="data of workData")
           commonAnalytics(:data="data" :mode="mode")
           hr.my-2(style="opacity: 0.3")
-        .details.mt-4
-          .detail(v-for="detail in detailList")
-            p {{ detail.title }}:
-            p.right {{ detail.value }}{{ detail.unit }}
       v-card-actions
         v-btn(
           @click="activeDialog=false"
@@ -103,38 +99,6 @@ export default {
           href: '/settings',
         },
       ],
-      detailList: {
-        /** 稼働日数 */
-        daycount: {
-          title: '稼働日数',
-          value: 0,
-          unit: '日',
-        },
-        /** 日割の平均稼働時間 */
-        averageTime: {
-          title: '平均稼働時間',
-          value: '0時間0分',
-          unit: '',
-        },
-        /** 日割の平均収支 */
-        averageCommission: {
-          title: '平均収支',
-          value: 0,
-          unit: '円',
-        },
-        /** 日割の最大収支 */
-        maxCommission: {
-          title: '最大収支',
-          value: 0,
-          unit: '円',
-        },
-        /** 経費 */
-        cost: {
-          title: '経費',
-          value: 0,
-          unit: '円',
-        },
-      },
       /** propで渡す用データ */
       workData: [],
       /** 稼働実績リスト */
@@ -181,12 +145,19 @@ export default {
           this.dialogTitle = '生涯収支'
           this.workData[0] = {
             commission: 0,
+            maxCommission: 0,
+            cost: 0,
             time: 0,
+            days: 0,
           }
           this.commission.forEach((data) => {
             this.workData[0].commission += data.commission
             this.workData[0].cost += data.cost
             this.workData[0].time += data.time
+            this.workData[0].days += 1
+            if (this.workData[0].maxCommission < data.commission - data.cost) {
+              this.workData[0].maxCommission = data.commission - data.cost
+            }
           })
           break
         case 'month':
@@ -207,13 +178,22 @@ export default {
                   dateUnixtime: work.dateUnixtime,
                   year: work.year,
                   month: work.month,
-                  time: work.time,
+                  time: work.time + data.time,
+                  days: this.workData[index].days + 1,
+                  maxCommission:
+                    this.workData[index].maxCommission < work.commission
+                      ? work.commission
+                      : this.workData[index].maxCommission,
                 }
                 findFlag = true
               }
             })
             if (!findFlag) {
-              this.workData.push(data)
+              this.workData.push({
+                ...data,
+                days: 1,
+                maxCommission: data.commission,
+              })
             }
           })
           break
@@ -226,18 +206,27 @@ export default {
               if (work.year == data.year && !findFlag) {
                 this.workData[index] = {
                   commission: work.commission + data.commission,
-                  commission: work.cost + data.cost,
+                  cost: work.cost + data.cost,
                   date: work.date,
                   dateUnixtime: work.dateUnixtime,
                   year: work.year,
                   month: work.month,
-                  time: work.time,
+                  time: work.time + data.time,
+                  days: this.workData[index].days + 1,
+                  maxCommission:
+                    this.workData[index].maxCommission < work.commission
+                      ? work.commission
+                      : this.workData[index].maxCommission,
                 }
                 findFlag = true
               }
             })
             if (!findFlag) {
-              this.workData.push(data)
+              this.workData.push({
+                ...data,
+                days: 1,
+                maxCommission: data.commission,
+              })
             }
           })
           break
@@ -245,6 +234,10 @@ export default {
         default:
           this.dialogTitle = '日付別収支'
           this.workData = this.commission
+          this.workData.forEach((data, index) => {
+            this.workData[index].days = 1
+            this.workData[index].maxCommission = data.commission
+          })
           break
       }
       this.activeDialog = true
@@ -270,13 +263,5 @@ export default {
 }
 hr {
   width: 100% !important;
-}
-.details {
-  .detail {
-    display: flex;
-    .right {
-      margin-left: auto;
-    }
-  }
 }
 </style>

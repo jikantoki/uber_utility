@@ -23,9 +23,9 @@
           tbody(style="text-align: center;")
             tr(v-for="(work, cnt) in commission")
               td(style="font-weight: unset;") {{ dateToString(work.date) }}
-              td(style="font-weight: unset;") {{ ('0' + Math.floor(work.time / 60)).slice(-2) }}時間{{ ('0' + work.time % 60).slice(-2) }}分
+              td(style="font-weight: unset;") {{ timeToHHMM(work.time) }}
               td(style="font-weight: unset;") {{ work.commission - work.cost }}円
-              td(style="font-weight: unset;") {{ calcHourly(work.commission, work.time) }}円
+              td(style="font-weight: unset;") {{ calcHourly(work.commission - work.cost, work.time) }}円
               td(style="font-weight: unset; max-width: 5em;")
                 v-btn.my-0(color="var(--accent-color)" style="color: white;" @click="editWorkData(cnt)" icon="mdi-pencil" size="x-small")
                 v-btn.my-0(color="var(--color-error)" style="color: white;" @click="deleteWorkData(cnt)" icon="mdi-delete" size="x-small")

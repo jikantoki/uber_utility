@@ -367,6 +367,19 @@ export default {
 
       return dayOfWeek
     },
+    /** 時間（int 分）を（String HH時間MM分）に変換 */
+    timeToHHMM(time) {
+      const hour = Math.floor(time / 60)
+      let strHour
+      if (hour < 100) {
+        strHour = ('0' + hour).slice(-2)
+      } else {
+        strHour = hour
+      }
+      const min = time % 60
+      const strMin = ('0' + min).slice(-2)
+      return `${strHour}時間${strMin}分`
+    },
 
     //ここからは優先度低いやつ
 

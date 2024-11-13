@@ -6,17 +6,17 @@
         .thisweek-commission.commission-item
           .text-h6 {{ allHistory ? '今までの収益' : '今週の収益'}}
           div(style="display: flex; align-items: flex-end; margin: 8px 0;")
-            .text-h2.ma-0(v-show="!loading") {{ thisWeekCommission }}
+            .text-h2.ma-0(v-show="!loading") {{ thisWeekCommission - thisWeekCost }}
             .text-h6(style="margin-left: 0.5em;" v-show="!loading") 円
             ContentLoader.text-h2.ma-0(v-show="loading" style="width: 5em;")
       .hourly-and-operate-time(style="display:flex;")
         .hourly.commission-item.mr-2(style="width:40%;")
           .text-h6 時給
-          .hourly-text.text-h5(v-show="!loading") {{ thisWeekHourly - thisWeekCost }}円
+          .hourly-text.text-h5(v-show="!loading") {{ thisWeekHourly }}円
           ContentLoader.text-h5(v-show="loading" style="width: 5em;")
         .operate-time.commission-item.ml-2(style="width:60%;")
           .text-h6 稼働時間
-          .operate-time-text.text-h5(v-show="!loading") {{ Math.floor(thisWeekOperateTime / 60) }}時間{{ Math.floor(thisWeekOperateTime % 60) }}分
+          .operate-time-text.text-h5(v-show="!loading") {{ timeToHHMM(thisWeekOperateTime) }}
           ContentLoader.text-h5(v-show="loading" style="width: 5em;")
       .edit-work-button(style="display: flex;")
         a.mt-2(
@@ -104,7 +104,7 @@
             tbody
               tr(v-for="(work, cnt) in commission" :style="!work.time ? 'opacity: 0.5;' : ''")
                 td(style="font-weight: unset;") {{ dateToString(work.date) }}
-                td(style="font-weight: unset;") {{ ('0' + Math.floor(work.time / 60)).slice(-2) }}時間{{ ('0' + work.time % 60).slice(-2) }}分
+                td(style="font-weight: unset;") {{ timeToHHMM(work.time) }}
                 td(style="font-weight: unset;") {{ work.commission - work.cost }}円
                 td(style="font-weight: unset;") {{ calcHourly(work.commission - work.cost, work.time) }}円
         v-window-item.tab-item(value='date')
@@ -129,7 +129,7 @@
             tbody
               tr(v-for="(work, cnt) in commission" :style="!work.time ? 'opacity: 0.5;' : ''")
                 td(style="font-weight: unset;") {{ dateToString(work.date) }}
-                td(style="font-weight: unset;") {{ ('0' + Math.floor(work.time / 60)).slice(-2) }}時間{{ ('0' + work.time % 60).slice(-2) }}分
+                td(style="font-weight: unset;") {{ timeToHHMM(work.time) }}
                 td(style="font-weight: unset;") {{ work.commission - work.cost }}円
         v-window-item.tab-item(value='commission')
           v-card.content
@@ -191,7 +191,7 @@
               show-labels
               :labels="dateHistory"
               )
-              //template(v-slot:label="item") {{ ('0' + Math.floor(item.value / 60)).slice(-2) }}時間{{ ('0' + item.value % 60).slice(-2) }}分
+              //template(v-slot:label="item") {{ timeToHHMM(item.value) }}
           table(style="width: 100%;")
             thead
               tr
@@ -202,7 +202,7 @@
               tr(v-for="(work, cnt) in commission" :style="!work.time ? 'opacity: 0.5;' : ''")
                 td(style="font-weight: unset;") {{ cnt + 1 }}
                 td(style="font-weight: unset;") {{ dateToString(work.date) }}
-                td(style="font-weight: unset;") {{ ('0' + Math.floor(work.time / 60)).slice(-2) }}時間{{ ('0' + work.time % 60).slice(-2) }}分
+                td(style="font-weight: unset;") {{ timeToHHMM(work.time) }}
       .edit-work-button(style="display: flex; align-self: center;")
         .ma-2(v-if="userStore && userStore.userId")
           v-btn.ma-0(

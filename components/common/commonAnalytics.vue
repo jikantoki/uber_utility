@@ -13,6 +13,10 @@
       .operate-time.commission-item.ml-2(style="width:50%;")
         .text-h7 稼働時間
         .operate-time-text.text-h6 {{ Math.floor(data.time / 60) }}時間{{ Math.floor(data.time % 60) }}分
+  .details.mt-4(v-if="mode != 'day'")
+    .detail(v-for="detail in detailList")
+      p {{ detail.title }}:
+      p.right {{ detail.value }}{{ detail.unit }}
 </template>
 
 <script>
@@ -22,6 +26,41 @@ export default {
   data() {
     return {
       title: '収支',
+      /** 詳細表示リスト */
+      detailList: {
+        /** 稼働日数 */
+        daycount: {
+          title: '稼働日数',
+          value: this.data.days,
+          unit: '日',
+        },
+        /** 日割の平均稼働時間 */
+        averageTime: {
+          title: '平均稼働時間',
+          value: this.timeToHHMM(this.data.time),
+          unit: '',
+        },
+        /** 日割の平均収支 */
+        averageCommission: {
+          title: '平均収支',
+          value: Math.floor(
+            (this.data.commission - this.data.cost) / this.data.days,
+          ),
+          unit: '円',
+        },
+        /** 日割の最大収支 */
+        maxCommission: {
+          title: '最大収支',
+          value: this.data.maxCommission,
+          unit: '円',
+        },
+        /** 経費合計 */
+        cost: {
+          title: '経費合計',
+          value: this.data.cost,
+          unit: '円',
+        },
+      },
     }
   },
   props: {
@@ -29,6 +68,8 @@ export default {
     data: {
       type: Object,
       default: {
+        days: 0,
+        maxCommission: 0,
         commission: 0,
         cost: 0,
         dateUnixtime: 0,
@@ -70,5 +111,13 @@ export default {
 .hitsuyou-mudana-space {
   height: 5em;
   width: 100%;
+}
+.details {
+  .detail {
+    display: flex;
+    .right {
+      margin-left: auto;
+    }
+  }
 }
 </style>

@@ -52,19 +52,19 @@
           :disabled="!userName || !password"
           :loading="loading"
           ref="submit"
-          ) Login
+          ) ログイン
         v-btn.round(
           v-if="page === 0"
           @click="a('/registar')"
           v-show="!loading"
-          ) Registar Account
+          ) または新規作成
         v-btn.round.submit(
           v-if="page === 1"
           @click="login()"
           :disabled="!token"
           :loading="loadingToken"
           ref="submitToken"
-          ) Login
+          ) ログイン
 </template>
 
 <script>
@@ -77,7 +77,7 @@ export default {
   setup() {
     //サーバーサイドで仮のタイトルを設定、mountedで言語ごとに再設定する
     Setup.setTitle('Login')
-    Setup.setDescription('ログインして、世界とつながろう')
+    Setup.setDescription('ログインページ')
   },
   data() {
     return {
@@ -91,7 +91,7 @@ export default {
       loadingToken: false,
       errorMessage: null,
       page: 0,
-      pageTitle: 'ログインして、世界とつながろう',
+      pageTitle: 'ログイン',
       userStore: useUserStore(),
     }
   },

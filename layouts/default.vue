@@ -9,9 +9,9 @@
         nuxt-page
       ClientOnly
         common-bar(
-          v-if="!userStore.userId"
-          title="ログインして、もっと便利に"
-          subTitle="UberUTLにログインし、通知の挙動をチェックしてみよう"
+          v-if="!userStore.userId && !loginPageFlag"
+          title="ログインして、使ってみよう"
+          subTitle="UberUTLで、稼働履歴や統計を見てみよう"
           :buttons="commonBarButtons"
           )
         common-bar(
@@ -23,7 +23,7 @@
           )
       footer#footer
         common-footer
-    commonBottomBar
+    commonBottomBar(v-if="userStore && userStore.userId")
   v-dialog(v-model="dialog" max-width="500")
     v-card
       v-card-title {{ dialogTitle }}
@@ -96,12 +96,23 @@ export default {
       dialogTitle: null,
       dialogText: null,
       dialogActions: null,
+      loginPageFlag: false,
     }
   },
   /**
    * 監視したい変数を記述
    */
-  watch: {},
+  watch: {
+    $route: {
+      handler: function (to) {
+        if (to.path == '/login' || to.path == '/registar') {
+          this.loginPageFlag = true
+        } else {
+          this.loginPageFlag = false
+        }
+      },
+    },
+  },
   /**
    * ページ生成時にやりたい事
    */

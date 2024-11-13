@@ -78,15 +78,15 @@
           @click="registar"
           :disabled="!userName || !mailAddress || !password || !confirmPassword"
           ref="formRegistar"
-          ) Registar
+          ) 登録
         v-btn.round(
           v-if="page === 0"
           @click="a('/login')"
-          ) I have a account already
+          ) 既にアカウントを持っています
         v-btn.round.submit(
           v-if="page === 1"
           @click="a('/login')"
-          ) Login
+          ) ログインする
 </template>
 
 <script>

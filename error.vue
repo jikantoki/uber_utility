@@ -99,6 +99,7 @@ body {
     max-height: 40vh;
     max-width: 100%;
     overflow: auto;
+    white-space: break-spaces;
   }
 }
 </style>

@@ -7,6 +7,9 @@
       v-card-subtitle {{ error.message }}
       v-card-text
         span ごめんエラーページ出ちった
+        .detail.ma-4
+          p エラー詳細:
+          pre.detail-pre {{ error }}
       v-card-actions(style="justify-content: center;")
         a(href="/" style="color: unset;")
           v-btn Top
@@ -89,5 +92,13 @@ body {
 }
 .logo-img {
   width: 8em;
+}
+.detail {
+  text-align: left;
+  .detail-pre {
+    max-height: 40vh;
+    max-width: 100%;
+    overflow: auto;
+  }
 }
 </style>

@@ -9,6 +9,7 @@ import ajaxFunctions from '~/js/ajaxFunctions'
 import PackageJson from '/package.json'
 import Functions from '~/js/Functions'
 import ContentLoader from '~/components/LoadingText'
+import ComponentButton from '~/components/common/componentButton.vue'
 import { useCommonBarStore } from '~/composables/commonBar'
 import { useThemeStore } from '~/composables/theme'
 import { VDateInput } from 'vuetify/labs/VDateInput'
@@ -16,8 +17,9 @@ import { VNumberInput } from 'vuetify/labs/VNumberInput'
 
 export default {
   components: {
-    adsense: adsense,
-    ContentLoader: ContentLoader,
+    adsense,
+    ContentLoader,
+    ComponentButton,
     VDateInput,
     VNumberInput,
   },

@@ -23,9 +23,28 @@
   ],
   "screenshots": [
     {
-      "src": "img/icon512.png",
-      "sizes": "512x512",
-      "type": "image/png"
+      "src": "img/thumbnail.png",
+      "sizes": "1920x1080",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "img/thumbnail_smartphone.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "img/mainscreen.png",
+      "sizes": "1920x1080",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "img/mainscreen_smartphone.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow"
     }
   ],
   "shortcuts": [
@@ -35,8 +54,8 @@
       "url": "/",
       "icons": [
         {
-          "src": "/img/favicon.ico",
-          "size": "32x32"
+          "src": "/img/icon96_transparent.png",
+          "sizes": "96x96"
         }
       ]
     },
@@ -46,8 +65,8 @@
       "url": "/about",
       "icons": [
         {
-          "src": "/img/favicon.ico",
-          "size": "32x32"
+          "src": "/img/icon96_transparent.png",
+          "sizes": "96x96"
         }
       ]
     }

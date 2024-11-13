@@ -134,16 +134,6 @@ export default {
       })
     }, 10)
 
-    let installEvt
-    window.addEventListener('beforeinstallprompt', (e) => {
-      installEvt = e
-      e.preventDefault()
-      showInstallDialog()
-      setInterval(() => {
-        showInstallDialog()
-      }, 3000)
-    })
-
     /**
      * mountedの最後に記述
      */

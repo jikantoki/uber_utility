@@ -119,13 +119,19 @@ export default {
         /** 日割の平均収支 */
         averageCommission: {
           title: '平均収支',
-          value: '0',
+          value: 0,
           unit: '円',
         },
         /** 日割の最大収支 */
         maxCommission: {
           title: '最大収支',
-          value: '0',
+          value: 0,
+          unit: '円',
+        },
+        /** 経費 */
+        cost: {
+          title: '経費',
+          value: 0,
           unit: '円',
         },
       },
@@ -179,6 +185,7 @@ export default {
           }
           this.commission.forEach((data) => {
             this.workData[0].commission += data.commission
+            this.workData[0].cost += data.cost
             this.workData[0].time += data.time
           })
           break
@@ -195,6 +202,7 @@ export default {
               ) {
                 this.workData[index] = {
                   commission: work.commission + data.commission,
+                  cost: work.cost + data.cost,
                   date: work.date,
                   dateUnixtime: work.dateUnixtime,
                   year: work.year,
@@ -218,6 +226,7 @@ export default {
               if (work.year == data.year && !findFlag) {
                 this.workData[index] = {
                   commission: work.commission + data.commission,
+                  commission: work.cost + data.cost,
                   date: work.date,
                   dateUnixtime: work.dateUnixtime,
                   year: work.year,

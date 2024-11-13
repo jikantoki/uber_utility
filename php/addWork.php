@@ -26,6 +26,7 @@ $token = $_SERVER['HTTP_TOKEN'];
 $workData = json_decode($_POST['work'], true);
 $workDate = $_POST['workDate'];
 $commission = $workData['commission'];
+$cost = $workData['cost'];
 $memo = $workData['memo'];
 $time = $workData['hour'] * 60 + $workData['min'];
 /** 未使用なランダムID */
@@ -54,6 +55,7 @@ SQLinsert('work_list', [
   'dateUnixtime' => $workDate,
   'time' => $time,
   'commission' => $commission,
+  'cost' => $cost,
   'memo' => $memo
 ]);
 

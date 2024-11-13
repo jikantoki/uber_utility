@@ -24,7 +24,7 @@
             tr(v-for="(work, cnt) in commission")
               td(style="font-weight: unset;") {{ dateToString(work.date) }}
               td(style="font-weight: unset;") {{ ('0' + Math.floor(work.time / 60)).slice(-2) }}時間{{ ('0' + work.time % 60).slice(-2) }}分
-              td(style="font-weight: unset;") {{ work.commission }}円
+              td(style="font-weight: unset;") {{ work.commission - work.cost }}円
               td(style="font-weight: unset;") {{ calcHourly(work.commission, work.time) }}円
               td(style="font-weight: unset; max-width: 5em;")
                 v-btn.my-0(color="var(--accent-color)" style="color: white;" @click="editWorkData(cnt)" icon="mdi-pencil" size="x-small")
@@ -74,6 +74,15 @@
             v-number-input(
               control-variant="stacked"
               v-model="editForm.commission"
+              :min="0"
+            )
+            span.mx-2 円
+        .form-cell(style="display: flex;")
+          p.th 経費
+          .td(style="display: flex; align-items: center;")
+            v-number-input(
+              control-variant="stacked"
+              v-model="editForm.cost"
               :min="0"
             )
             span.mx-2 円
@@ -138,6 +147,7 @@ export default {
         hour: null,
         min: null,
         commission: null,
+        cost: null,
         memo: null,
       },
       /** エラーメッセージ（nullで非表示） */
@@ -150,6 +160,7 @@ export default {
           workId: 'hogefuga', //ランダムID
           date: new Date(2024, 8, 29), //稼働日時
           commission: 11136, //報酬（円）
+          cost: 810, //経費（円）
           time: 60 * 4.7, //稼働時間（分）
           memo: 'piyo', //メモ
         },
@@ -171,6 +182,7 @@ export default {
         date: new Date(workData.dateUnixtime * 1000),
         workId: workData.workId,
         commission: workData.commission,
+        cost: workData.cost,
         time: workData.time,
         memo: workData.memo,
       })
@@ -185,6 +197,7 @@ export default {
         hour: null,
         min: null,
         commission: null,
+        cost: null,
         memo: null,
       }
       this.dialogErrorMessage = null
@@ -241,6 +254,7 @@ export default {
         this.commission.push({
           date: workData.date,
           commission: workData.commission,
+          cost: workData.cost,
           time: workData.hour * 60 + workData.min,
           memo: workData.memo,
         })
@@ -256,6 +270,7 @@ export default {
       this.editForm.hour = Math.floor(this.commission[indexNumber].time / 60)
       this.editForm.min = this.commission[indexNumber].time % 60
       this.editForm.commission = this.commission[indexNumber].commission
+      this.editForm.cost = this.commission[indexNumber].cost
       this.editForm.memo = this.commission[indexNumber].memo
       this.dialogErrorMessage = null
       this.editMode = true
@@ -272,7 +287,6 @@ export default {
           workId: this.commission[indexNumber].workId,
         },
       )
-      console.log(ans)
       this.commission.splice(indexNumber, 1)
     },
   },

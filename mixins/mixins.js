@@ -289,12 +289,12 @@ export default {
     isObject(obj) {
       return obj instanceof Object && !(obj instanceof Array) ? true : false
     },
-
+    /** 稼働履歴を指定した順でソート */
     commissionSort(sortBy) {
       switch (sortBy) {
         case 'commission':
           this.commission.sort((a, b) => {
-            return b.commission - a.commission
+            return b.commission - b.cost - (a.commission - a.cost)
           })
           break
         case 'operateTime':
@@ -305,8 +305,8 @@ export default {
         case 'hourly':
           this.commission.sort((a, b) => {
             return (
-              this.calcHourly(b.commission, b.time) -
-              this.calcHourly(a.commission, a.time)
+              this.calcHourly(b.commission - b.cost, b.time) -
+              this.calcHourly(a.commission - a.cost, a.time)
             )
           })
           break

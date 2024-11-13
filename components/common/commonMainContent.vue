@@ -12,7 +12,7 @@
       .hourly-and-operate-time(style="display:flex;")
         .hourly.commission-item.mr-2(style="width:40%;")
           .text-h6 時給
-          .hourly-text.text-h5(v-show="!loading") {{ thisWeekHourly }}円
+          .hourly-text.text-h5(v-show="!loading") {{ thisWeekHourly - thisWeekCost }}円
           ContentLoader.text-h5(v-show="loading" style="width: 5em;")
         .operate-time.commission-item.ml-2(style="width:60%;")
           .text-h6 稼働時間
@@ -105,8 +105,8 @@
               tr(v-for="(work, cnt) in commission" :style="!work.time ? 'opacity: 0.5;' : ''")
                 td(style="font-weight: unset;") {{ dateToString(work.date) }}
                 td(style="font-weight: unset;") {{ ('0' + Math.floor(work.time / 60)).slice(-2) }}時間{{ ('0' + work.time % 60).slice(-2) }}分
-                td(style="font-weight: unset;") {{ work.commission }}円
-                td(style="font-weight: unset;") {{ calcHourly(work.commission, work.time) }}円
+                td(style="font-weight: unset;") {{ work.commission - work.cost }}円
+                td(style="font-weight: unset;") {{ calcHourly(work.commission - work.cost, work.time) }}円
         v-window-item.tab-item(value='date')
           v-card.content
             v-sparkline(
@@ -130,7 +130,7 @@
               tr(v-for="(work, cnt) in commission" :style="!work.time ? 'opacity: 0.5;' : ''")
                 td(style="font-weight: unset;") {{ dateToString(work.date) }}
                 td(style="font-weight: unset;") {{ ('0' + Math.floor(work.time / 60)).slice(-2) }}時間{{ ('0' + work.time % 60).slice(-2) }}分
-                td(style="font-weight: unset;") {{ work.commission }}円
+                td(style="font-weight: unset;") {{ work.commission - work.cost }}円
         v-window-item.tab-item(value='commission')
           v-card.content
             v-sparkline(
@@ -154,7 +154,7 @@
               tr(v-for="(work, cnt) in commission" :style="!work.time ? 'opacity: 0.5;' : ''")
                 td(style="font-weight: unset;") {{ cnt + 1 }}
                 td(style="font-weight: unset;") {{ dateToString(work.date) }}
-                td(style="font-weight: unset;") {{ work.commission }}円
+                td(style="font-weight: unset;") {{ work.commission - work.cost }}円
         v-window-item.tab-item(value='hourly')
           v-card.content
             v-sparkline(
@@ -178,7 +178,7 @@
               tr(v-for="(work, cnt) in commission" :style="!work.time ? 'opacity: 0.5;' : ''")
                 td(style="font-weight: unset;") {{ cnt + 1 }}
                 td(style="font-weight: unset;") {{ dateToString(work.date) }}
-                td(style="font-weight: unset;") {{ calcHourly(work.commission, work.time) }}円
+                td(style="font-weight: unset;") {{ calcHourly(work.commission - work.cost, work.time) }}円
         v-window-item.tab-item(value='operateTime')
           v-card.content
             v-sparkline(
@@ -247,6 +247,7 @@ export default {
       tab: null,
       loading: true, //ページ読み込み中フラグ
       thisWeekCommission: 0, //今週の収益
+      thisWeekCost: 0, //今週の経費
       thisWeekHourly: 0, //今週の時給
       thisWeekOperateTime: 0, //今週の稼働時間
       /** 報酬リスト
@@ -255,12 +256,14 @@ export default {
             workId: 'hogefuga', //ランダムID
             date: new Date(2024, 8, 29), //稼働日時
             commission: 11136, //報酬（円）
+            cost: 810, //経費（円）
             time: 60 * 4.7, //稼働時間（分）
             memo: 'piyo', //メモ
           },
          */
       commission: [],
       commissionHistory: [], //日付順の報酬額リスト
+      costHistory: [], //日付順の経費リスト
       hourlyHistory: [], //日付順の時給リスト
       timeHistory: [], //日付順の稼働時間リスト
       dateHistory: [], //historyで使う日付リスト
@@ -286,6 +289,7 @@ export default {
             date: date,
             workId: workData.workId,
             commission: workData.commission,
+            cost: workData.cost,
             time: workData.time,
             memo: workData.memo,
           })
@@ -302,6 +306,7 @@ export default {
                   date: date,
                   workId: workData.workId,
                   commission: workData.commission,
+                  cost: workData.cost,
                   time: workData.time,
                   memo: workData.memo,
                 })
@@ -313,6 +318,7 @@ export default {
               date: this.getDayOfWeek(7 - i),
               workId: null,
               commission: 0,
+              cost: 0,
               time: 0,
               memo: null,
             })
@@ -322,9 +328,10 @@ export default {
     }
 
     for (const work of this.commission.reverse()) {
-      const hourly = this.calcHourly(work.commission, work.time)
+      const hourly = this.calcHourly(work.commission - work.cost, work.time)
 
       this.commissionHistory.push(work.commission)
+      this.costHistory.push(work.cost)
       this.hourlyHistory.push(hourly)
       this.timeHistory.push(work.time)
       this.dateHistory.push(
@@ -333,10 +340,11 @@ export default {
         ).slice(-2)}`,
       )
       this.thisWeekCommission += work.commission
+      this.thisWeekCost += work.cost
       this.thisWeekOperateTime += work.time
     }
     this.thisWeekHourly = this.calcHourly(
-      this.thisWeekCommission,
+      this.thisWeekCommission - this.thisWeekCost,
       this.thisWeekOperateTime,
     )
     this.commission.reverse()

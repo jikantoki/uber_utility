@@ -134,13 +134,6 @@
           color="var(--accent-color)"
           style="color: white;"
         ) 保存
-  .fixed-button
-    v-btn(
-      size="large"
-      color="var(--accent-color)"
-      style="height: auto; width: 100%; border-radius: var(--border-radius); color: white;"
-      @click="clearWorkData();editDialog=true;editMode=false"
-    ) 新規追加
   component-button(
     v-if="userStore && userStore.userId"
     icon="mdi-plus"

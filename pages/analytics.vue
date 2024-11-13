@@ -6,27 +6,27 @@
       .contents
         .other-content(v-for="button of shushiButtons")
           .a-cover(v-ripple)
-            a.content-a(@click="openData(button.mode)")
+            a.content-a(@click="ignoreCost = false;openData(button.mode)")
               .button-inner.pl-4.py-4
                 v-icon {{ button.icon }}
                 p.text-h7.ml-2 {{ button.name }}
                 p.text-h7.right.pr-4 >
           hr.ma-0
-      .text-h5 利益（収支と変わらないかも？）
+      .text-h5 利益（経費を無視して計算）
       .contents
         .other-content(v-for="button of riekiButtons")
           .a-cover(v-ripple)
-            a.content-a
+            a.content-a(@click="ignoreCost = true;openData(button.mode)")
               .button-inner.pl-4.py-4
                 v-icon {{ button.icon }}
                 p.text-h7.ml-2 {{ button.name }}
                 p.text-h7.right.pr-4 >
           hr.ma-0
   v-dialog(v-model="activeDialog" max-width="640px")
-    v-card(:title="dialogTitle")
+    v-card(:title="`${dialogTitle}${ignoreCost ? '利益' : '収支'}`")
       .analytics-item.my-4.mx-6
         .vfor-analytics(v-for="data of workData")
-          commonAnalytics(:data="data" :mode="mode")
+          commonAnalytics(:data="data" :mode="mode" :ignoreCost="ignoreCost")
           hr.my-2(style="opacity: 0.3")
       v-card-actions
         v-btn(
@@ -86,19 +86,21 @@ export default {
         {
           name: '生涯利益',
           icon: 'mdi-heart',
-          href: '/settings',
+          mode: 'all',
         },
         {
           name: '年別利益',
           icon: 'mdi-calendar-expand-horizontal',
-          href: '/settings',
+          mode: 'year',
         },
         {
           name: '月別利益',
           icon: 'mdi-moon-waning-crescent',
-          href: '/settings',
+          mode: 'month',
         },
       ],
+      /** trueは経費を無視する（利益表示） */
+      ignoreCost: false,
       /** propで渡す用データ */
       workData: [],
       /** 稼働実績リスト */
@@ -136,13 +138,15 @@ export default {
     }
   },
   methods: {
-    /** データを開く */
+    /**
+     * データを開く
+     */
     openData(mode) {
       this.workData = []
       this.mode = mode
       switch (mode) {
         case 'all':
-          this.dialogTitle = '生涯収支'
+          this.dialogTitle = '生涯'
           this.workData[0] = {
             commission: 0,
             maxCommission: 0,
@@ -161,7 +165,7 @@ export default {
           })
           break
         case 'month':
-          this.dialogTitle = '月別収支'
+          this.dialogTitle = '月別'
           this.commission.forEach((data) => {
             let findFlag = false
             this.workData.forEach((work, index) => {
@@ -198,7 +202,7 @@ export default {
           })
           break
         case 'year':
-          this.dialogTitle = '年別収支'
+          this.dialogTitle = '年別'
           this.commission.forEach((data) => {
             let findFlag = false
             this.workData.forEach((work, index) => {
@@ -232,7 +236,7 @@ export default {
           break
         case 'day':
         default:
-          this.dialogTitle = '日付別収支'
+          this.dialogTitle = '日付別'
           this.workData = this.commission
           this.workData.forEach((data, index) => {
             this.workData[index].days = 1

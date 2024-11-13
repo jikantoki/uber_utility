@@ -4,12 +4,12 @@
     .commission-item
         .text-h6 {{ title }}
         div.mb-2(style="display: flex; align-items: flex-end;")
-          .text-h4.ma-0 {{ data.commission - data.cost }}
+          .text-h4.ma-0 {{ ignoreCost ? data.commission : data.commission - data.cost }}
           .text-h6(style="margin-left: 0.5em;") 円
     .hourly-and-operate-time(style="display:flex;")
       .hourly.commission-item.mr-2(style="width:50%;")
         .text-h7 時給
-        .hourly-text.text-h6 {{ calcHourly(data.commission - data.cost, data.time) }}円
+        .hourly-text.text-h6 {{ calcHourly((ignoreCost ? data.commission : data.commission - data.cost), data.time) }}円
       .operate-time.commission-item.ml-2(style="width:50%;")
         .text-h7 稼働時間
         .operate-time-text.text-h6 {{ Math.floor(data.time / 60) }}時間{{ Math.floor(data.time % 60) }}分
@@ -44,7 +44,9 @@ export default {
         averageCommission: {
           title: '平均収支',
           value: Math.floor(
-            (this.data.commission - this.data.cost) / this.data.days,
+            (this.ignoreCost
+              ? this.data.commission
+              : this.data.commission - this.data.cost) / this.data.days,
           ),
           unit: '円',
         },
@@ -85,6 +87,11 @@ export default {
     mode: {
       type: String,
       default: null,
+    },
+    /** Trueは経費を無視する（利益表示） */
+    ignoreCost: {
+      type: Boolean,
+      default: false,
     },
   },
   mounted() {

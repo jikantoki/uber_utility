@@ -321,7 +321,6 @@ export default {
       }
     }
 
-    let cnt = 0 //実際に稼働した日数をカウント
     for (const work of this.commission.reverse()) {
       const hourly = this.calcHourly(work.commission, work.time)
 
@@ -334,11 +333,12 @@ export default {
         ).slice(-2)}`,
       )
       this.thisWeekCommission += work.commission
-      this.thisWeekHourly += hourly
       this.thisWeekOperateTime += work.time
-      if (hourly) cnt++
     }
-    this.thisWeekHourly = Math.floor(this.thisWeekHourly / (cnt + 1))
+    this.thisWeekHourly = this.calcHourly(
+      this.thisWeekCommission,
+      this.thisWeekOperateTime,
+    )
     this.commission.reverse()
 
     this.loading = false

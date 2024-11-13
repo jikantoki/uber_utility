@@ -170,6 +170,18 @@ export default {
           },
         ]
         this.dialog = true
+        this.sendAjaxWithAuth(
+          '/sendPushForMe.php',
+          {
+            endpoint: webPush.endpoint,
+            publickey: webPush.publicKey,
+            authtoken: webPush.authToken,
+          },
+          {
+            title: `UberUTL`,
+            message: 'プッシュ通知の許可に成功しました！',
+          },
+        )
         return webPush
       } else {
         if (webPush === undefined) {

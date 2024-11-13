@@ -2,6 +2,9 @@
 
 Uber Driverアプリをもっと楽しく使えるユーティリティ
 
+![Thumbnail](thumbnail.jpg)
+![Main Screen](mainscreen.jpg)
+
 ## Our Mission
 
 使いにくいUber Driverアプリに不足している機能を補う

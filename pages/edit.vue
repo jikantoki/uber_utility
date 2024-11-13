@@ -28,7 +28,7 @@
               td(style="font-weight: unset;") {{ calcHourly(work.commission - work.cost, work.time) }}円
               td(style="font-weight: unset; max-width: 5em;")
                 v-btn.my-0(color="var(--accent-color)" style="color: white;" @click="editWorkData(cnt)" icon="mdi-pencil" size="x-small")
-                v-btn.my-0(color="var(--color-error)" style="color: white;" @click="deleteWorkData(cnt)" icon="mdi-delete" size="x-small")
+                v-btn.my-0(color="var(--color-error)" style="color: white;" @click="viewDeleteDialog(cnt)" icon="mdi-delete" size="x-small")
         p.text-h5.ma-4(
           v-if="!commission[0] && !loading"
           style="text-align: center;"
@@ -39,9 +39,26 @@
           size=100
           style="display: block; margin: 64px auto;"
         )
+  v-dialog(v-model="deleteDialog" max-width="480px")
+    v-card(title="削除の確認")
+      .delete-message.mx-6
+        p 以下の稼働データを削除します。よろしいですか？
+        .delete-detail
+          p 日付: {{ dateToString(commission[deleteIndex].date) }}
+          p 稼働時間: {{ timeToHHMM(commission[deleteIndex].time) }}
+          p 報酬: {{ commission[deleteIndex].commission }}円
+          p 経費: {{ commission[deleteIndex].cost }}円
+          p メモ: {{ commission[deleteIndex].memo }}
+      v-card-actions
+        v-btn(@click="deleteDialog=false" variant="elevated") いいえ
+        v-btn(
+          @click="deleteWorkData(deleteIndex);deleteDialog=false;"
+          variant="elevated"
+          color="var(--accent-color)"
+          style="color: white;"
+        ) はい
   v-dialog(v-model="editDialog" persistent max-width="640px")
-    v-card
-      v-card-title {{ editMode ? '編集' : '新規追加' }}
+    v-card(:title="editMode ? '編集' : '新規追加'")
       .editor-form.mx-4
         .form-cell(style="display: flex;")
           p.th 日付
@@ -142,6 +159,10 @@ export default {
       loading: true,
       /** 編集ダイアログ開いているか？ */
       editDialog: false,
+      /** 削除確認ダイアログ開いているか？ */
+      deleteDialog: false,
+      /** 何番目のデータを削除？ */
+      deleteIndex: 0,
       editForm: {
         date: null,
         hour: null,
@@ -239,7 +260,6 @@ export default {
           },
         )
           .then((e) => {
-            console.log(e.body)
             if (e.body.status === 'ok') {
               //登録成功
             } else {
@@ -275,6 +295,10 @@ export default {
       this.dialogErrorMessage = null
       this.editMode = true
       this.editDialog = true
+    },
+    viewDeleteDialog: function (index) {
+      this.deleteIndex = index
+      this.deleteDialog = true
     },
     deleteWorkData: async function (indexNumber) {
       const ans = await this.sendAjaxWithAuth(

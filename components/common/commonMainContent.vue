@@ -300,7 +300,14 @@ export default {
           worklist.forEach((workData) => {
             if (!addFlag) {
               const date = new Date(workData.dateUnixtime * 1000)
-              if (date - this.getDayOfWeek(7 - i) == 0) {
+              //commissionリストにpushするかどうか？
+              let flag = false
+              if (new Date().getDay == 0) {
+                if (date - this.getDayOfWeek(7 - i) == 0) flag = true
+              } else {
+                if (date - this.getDayOfWeek(-7 + (7 - i)) == 0) flag = true
+              }
+              if (flag) {
                 addFlag = true
                 this.commission.push({
                   date: date,
@@ -314,14 +321,25 @@ export default {
             }
           })
           if (!addFlag) {
-            this.commission.push({
-              date: this.getDayOfWeek(7 - i),
-              workId: null,
-              commission: 0,
-              cost: 0,
-              time: 0,
-              memo: null,
-            })
+            if (new Date().getDay == 0) {
+              this.commission.push({
+                date: this.getDayOfWeek(7 - i),
+                workId: null,
+                commission: 0,
+                cost: 0,
+                time: 0,
+                memo: null,
+              })
+            } else {
+              this.commission.push({
+                date: this.getDayOfWeek(-7 + (7 - i)),
+                workId: null,
+                commission: 0,
+                cost: 0,
+                time: 0,
+                memo: null,
+              })
+            }
           }
         })
       }

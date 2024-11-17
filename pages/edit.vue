@@ -252,6 +252,10 @@ export default {
         }
 
         this.dialogErrorMessage = null
+        if (!workData.commission) workData.commission = 0
+        if (!workData.cost) workData.cost = 0
+        if (!workData.hour) workData.hour = 0
+        if (!workData.min) workData.min = 0
 
         this.sendAjaxWithAuth(
           '/addWork.php',

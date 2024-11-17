@@ -1,6 +1,6 @@
 <template lang="pug">
 .center
-  .copyRight.my-16 &copy; 2019 - {{ new Date().getFullYear() }} エノキ電気
+  .copyRight.my-16 &copy; 2019 - {{ new Date().getFullYear() }} ratech &amp; エノキ電気
 .hitsuyou-mudana-space
 </template>
 

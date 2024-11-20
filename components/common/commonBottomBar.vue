@@ -1,4 +1,6 @@
 <template lang="pug">
+.koukoku-space
+  commonAdsense
 .commonBottomBar
   .center(
     style="height: 100%;"
@@ -18,7 +20,11 @@
 
 <script>
 import mixins from '~/mixins/mixins'
+import commonAdsense from './commonAdsense.vue'
 export default {
+  components: {
+    commonAdsense,
+  },
   mixins: [mixins],
   data: () => {
     return {
@@ -77,6 +83,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.koukoku-space {
+  position: fixed;
+  bottom: 5em;
+  left: 0;
+  width: 100%;
+}
 .commonBottomBar {
   position: fixed;
   bottom: 0;

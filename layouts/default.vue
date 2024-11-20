@@ -49,6 +49,7 @@ import webpush from '~/js/webpush'
 import splash from '~/components/common/commonSplash'
 import commonBar from '~/components/common/commonBar.vue'
 import commonBottomBar from '~/components/common/commonBottomBar.vue'
+import commonAdsense from '~/components/common/commonAdsense.vue'
 
 export default {
   /**
@@ -59,11 +60,12 @@ export default {
    * 使いたいvueファイルを記述
    */
   components: {
-    commonHeader: commonHeader,
-    commonFooter: commonFooter,
-    splash: splash,
+    commonHeader,
+    commonFooter,
+    splash,
     commonBar,
     commonBottomBar,
+    commonAdsense,
   },
   mixins: [mixins],
   /**

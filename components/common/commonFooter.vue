@@ -13,7 +13,7 @@ export default {
 
 <style lang="scss" scoped>
 .hitsuyou-mudana-space {
-  height: 5em;
+  height: 8em;
   width: 100%;
 }
 </style>

@@ -108,6 +108,7 @@ export default {
     .nav-button-div {
       text-align: center;
       width: -webkit-fill-available;
+      width: -moz-available;
       opacity: 0.6;
       .nav-a {
         display: block;

@@ -12,7 +12,7 @@
                 p.text-h7.ml-2 {{ button.name }}
                 p.text-h7.right.pr-4 >
           hr.ma-0
-      .text-h5 利益（経費を無視して計算）
+      .text-h5 売上
       .contents
         .other-content(v-for="button of riekiButtons")
           .a-cover(v-ripple)
@@ -23,12 +23,23 @@
                 p.text-h7.right.pr-4 >
           hr.ma-0
   v-dialog(v-model="activeDialog" max-width="640px")
-    v-card(:title="`${dialogTitle}${ignoreCost ? '利益' : '収支'}`")
+    v-card(
+      :title="`${dialogTitle}${ignoreCost ? '売上' : '収支'}`"
+      style="position: relative;"
+      )
       .analytics-item.my-4.mx-6
         .vfor-analytics(v-for="data of workData")
           commonAnalytics(:data="data" :mode="mode" :ignoreCost="ignoreCost")
           hr.my-2(style="opacity: 0.3")
-      v-card-actions
+      v-card-actions(style=`
+        position: sticky;
+        bottom: 0;
+        right: 1em;
+        background: rgb(var(--v-theme-surface));
+        width: -webkit-fill-available;
+        width: -moz-available;
+        border-top: solid 1px rgb(var(--v-theme-surface-variant));
+      `)
         v-btn(
           @click="activeDialog=false"
           variant="elevated"
@@ -77,29 +88,29 @@ export default {
           mode: 'day',
         },
         {
-          name: '曜日別収支（開発中）',
+          name: '曜日別収支',
           icon: 'mdi-calendar-week-begin',
           mode: 'dayOfWeek',
         },
       ],
       riekiButtons: [
         {
-          name: '生涯利益',
+          name: '生涯売上',
           icon: 'mdi-heart',
           mode: 'all',
         },
         {
-          name: '年別利益',
+          name: '年別売上',
           icon: 'mdi-calendar-expand-horizontal',
           mode: 'year',
         },
         {
-          name: '月別利益',
+          name: '月別売上',
           icon: 'mdi-moon-waning-crescent',
           mode: 'month',
         },
       ],
-      /** trueは経費を無視する（利益表示） */
+      /** trueは経費を無視する（売上表示） */
       ignoreCost: false,
       /** propで渡す用データ */
       workData: [],
@@ -234,6 +245,40 @@ export default {
             }
           })
           break
+        case 'dayOfWeek':
+          this.dialogTitle = '曜日別'
+          this.commission.forEach((data) => {
+            let findFlag = false
+            this.workData.forEach((work, index) => {
+              //曜日が同じなら統合
+              if (work.dayOfWeek == data.dayOfWeek && !findFlag) {
+                this.workData[index] = {
+                  commission: work.commission + data.commission,
+                  cost: work.cost + data.cost,
+                  date: work.date,
+                  dateUnixtime: work.dateUnixtime,
+                  year: work.year,
+                  month: work.month,
+                  time: work.time + data.time,
+                  days: this.workData[index].days + 1,
+                  dayOfWeek: work.dayOfWeek,
+                  maxCommission:
+                    this.workData[index].maxCommission < work.commission
+                      ? work.commission
+                      : this.workData[index].maxCommission,
+                }
+                findFlag = true
+              }
+            })
+            if (!findFlag) {
+              this.workData.push({
+                ...data,
+                days: 1,
+                maxCommission: data.commission,
+              })
+            }
+          })
+          break
         case 'day':
         default:
           this.dialogTitle = '日付別'
@@ -243,6 +288,17 @@ export default {
             this.workData[index].maxCommission = data.commission
           })
           break
+      }
+      if (mode == 'dayOfWeek') {
+        this.workData.sort((a, b) => {
+          if (a.dayOfWeek < b.dayOfWeek) {
+            return -1
+          } else {
+            return 1
+          }
+        })
+      } else {
+        this.workData.reverse()
       }
       this.activeDialog = true
     },

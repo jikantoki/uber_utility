@@ -383,6 +383,12 @@ export default {
       return `${strHour}時間${strMin}分`
     },
 
+    /** 0～6を入力で日～土の漢字を返す */
+    getJapaneseDayOfWeek(dayOfWeek) {
+      const weekList = ['日', '月', '火', '水', '木', '金', '土']
+      return weekList[dayOfWeek]
+    },
+
     //ここからは優先度低いやつ
 
     /**

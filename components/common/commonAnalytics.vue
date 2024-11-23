@@ -88,7 +88,7 @@ export default {
       type: String,
       default: null,
     },
-    /** Trueは経費を無視する（利益表示） */
+    /** Trueは経費を無視する（売上表示） */
     ignoreCost: {
       type: Boolean,
       default: false,
@@ -105,9 +105,12 @@ export default {
       case 'year':
         this.title = `${this.data.year}年`
         break
+      case 'dayOfWeek':
+        this.title = `${this.getJapaneseDayOfWeek(this.data.dayOfWeek)}曜日`
+        break
       case 'day':
       default:
-        this.title = this.dateToString(this.data.date)
+        this.title = `${this.data.year}年${this.dateToString(this.data.date)}`
         break
     }
   },

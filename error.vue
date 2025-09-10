@@ -64,7 +64,6 @@ body {
 * {
   user-select: none;
   list-style: none;
-  transition: all 0.14s;
   font-family: $font !important;
 }
 .center {

@@ -20,7 +20,7 @@ $font: 'Zen Maru Gothic', sans-serif;
 $body-font-family: $font;
 html,
 body {
-  height: 100vh !important;
+  height: 100svh !important;
 }
 :root {
   font-size: 16px;
@@ -134,8 +134,8 @@ body {
     flex-direction: column;
     align-items: center;
   }
-  .wrap100vh {
-    min-height: 100vh !important;
+  .wrap100svh {
+    min-height: 100svh !important;
   }
   .ontext {
     height: 1em;

@@ -28,7 +28,7 @@ export default {
 <style lang="scss" scoped>
 .component-button {
   position: fixed;
-  bottom: 1.3em + 5em;
+  bottom: calc(1.3em + 5em + var(--safe-area-inset-bottom));
   right: 1.3em;
   z-index: 50;
   height: 4em;

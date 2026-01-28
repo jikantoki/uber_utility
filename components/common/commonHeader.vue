@@ -4,6 +4,7 @@
     v-navigation-drawer.pa-0.nav-drawer(v-model="drawer" fixed temporary style="overflow: hidden;")
       v-list(nav dense)
         v-item-group(v-model="group" active-class="deep-purple-text text--accent-4")
+          .space(style="height: var(--safe-area-inset-top);")
           a.header-list(href="/login" v-if="!userStore || !userStore.userId")
             v-list-item.pa-4(link)
               .v-item
@@ -61,7 +62,7 @@
                   v-list-item-title {{ arrangeLocale(locale) }}
       template(v-slot:append)
         a.header-list(v-if="userStore && userStore.userId")
-          v-list-item.pa-4(link)
+          v-list-item.pa-4(link style="margin-bottom: var(--safe-area-inset-bottom);")
             .v-item
               v-icon(style="opacity:0.7") mdi-dots-vertical
               p.nav {{ $t('header.showMore') }}
@@ -560,5 +561,8 @@ button {
       border-radius: 9999px;
     }
   }
+}
+.v-toolbar {
+  top: var(--safe-area-inset-top) !important;
 }
 </style>

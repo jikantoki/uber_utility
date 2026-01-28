@@ -1,7 +1,7 @@
 <template lang="pug">
 .v-app-main-application#nuxt
   splash(v-show="splash")
-  v-app.wrap100vh(style="min-height: 100vh!important;width:100vw")
+  v-app.wrap100svh(style="min-height: 100svh!important;width:100svw")
     header
       common-header
     v-main#main
@@ -36,7 +36,7 @@
           @click="btn.action()"
           v-bind:class="[key === dialogActions.length - 1 ? 'btn-default' : 'btn-other']"
           ) {{ btn.value }}
-  .right-space(style="min-height: 100vh")
+  .right-space(style="min-height: 100svh")
 </template>
 
 <script>
@@ -237,7 +237,7 @@ $font: 'Zen Maru Gothic', sans-serif;
 $body-font-family: $font;
 html,
 body {
-  height: 100vh !important;
+  height: 100svh !important;
 }
 :root {
   font-size: 16px;
@@ -251,6 +251,16 @@ body {
   --accent-text-color: #ffffff;
   /** デフォルトのボーダー角の大きさ */
   --border-radius: 16px;
+
+  /* システムバーの領域に応じた余白を自動で取得 */
+  --safe-area-inset-top: env(safe-area-inset-top);
+  --safe-area-inset-bottom: env(safe-area-inset-bottom);
+  --safe-area-inset-left: env(safe-area-inset-left);
+  --safe-area-inset-right: env(safe-area-inset-right);
+  //--safe-area-inset-top: 12px;
+  //--safe-area-inset-bottom: 8px;
+  //--safe-area-inset-left: 0px;
+  //--safe-area-inset-right: 0px;
 }
 * {
   user-select: none;
@@ -261,6 +271,9 @@ body {
   font-family: $font !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  padding-top: var(--safe-area-inset-top);
+  /* 必要に応じて下部や左右の余白も設定 */
+  padding-bottom: var(--safe-area-inset-bottom);
   nav {
     padding: 30px;
   }
@@ -383,8 +396,8 @@ body {
     flex-direction: column;
     align-items: center;
   }
-  .wrap100vh {
-    min-height: 100vh !important;
+  .wrap100svh {
+    min-height: 100svh !important;
   }
   .ontext {
     height: 1em;

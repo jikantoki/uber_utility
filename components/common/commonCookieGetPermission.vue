@@ -22,7 +22,7 @@ export default {
 .v-card {
   position: fixed;
   right: 10%;
-  top: 10%;
+  top: calc(10% + var(--safe-area-inset-top));
 }
 .v-btn {
   background-color: var(--color-allow);

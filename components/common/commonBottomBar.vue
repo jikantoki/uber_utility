@@ -85,13 +85,13 @@ export default {
 <style lang="scss" scoped>
 .koukoku-space {
   position: fixed;
-  bottom: 5em;
+  bottom: calc(5em + var(--safe-area-inset-bottom));
   left: 0;
   width: 100%;
 }
 .commonBottomBar {
   position: fixed;
-  bottom: 0;
+  bottom: var(--safe-area-inset-bottom);
   left: 0;
   width: 100vw;
   height: 5em;

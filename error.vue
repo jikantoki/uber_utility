@@ -1,5 +1,5 @@
 <template lang="pug">
-.error-page(style="justify-content: center; height: 100vh; align-items: center;")
+.error-page(style="justify-content: center; height: 100svh; align-items: center;")
   .center
     .card(style="text-align: center;")
       img.logo-img(src="/icon.png" style="height: 120px;")
@@ -48,7 +48,7 @@ $font: 'Zen Maru Gothic', sans-serif;
 $body-font-family: $font;
 html,
 body {
-  height: 100vh !important;
+  height: 100svh !important;
 }
 :root {
   font-size: 16px;
@@ -70,7 +70,7 @@ body {
 .center {
   width: 60%;
   margin: auto;
-  height: 100vh;
+  height: 100svh;
   display: flex;
   justify-content: center;
   align-items: center;

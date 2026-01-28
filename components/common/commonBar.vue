@@ -56,7 +56,7 @@ $breakpoints: (
 }
 .common-bar {
   position: fixed;
-  bottom: 0px;
+  bottom: var(--safe-area-inset-bottom);
   left: 0px;
   width: 100%;
   text-align: center;

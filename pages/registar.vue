@@ -25,6 +25,7 @@
         :rules="[rules.required]"
         hint="3～32文字、半角英数字アンダーバーのみ"
         ref="formId"
+        autocomplete="username"
         @keydown.enter="$refs.formMail.focus()"
         clearable
         )
@@ -32,11 +33,12 @@
         v-if="page === 0"
         v-model="mailAddress"
         name="mail"
-        label="Mail Address"
+        label="メールアドレス"
         prepend-inner-icon="mdi-email-outline"
         type="email"
         :rules="[rules.required]"
         ref="formMail"
+        autocomplete="email"
         @keydown.enter="$refs.formPass.focus()"
         clearable
         )
@@ -44,12 +46,13 @@
         v-if="page === 0"
         v-model="password"
         name="password"
-        label="Password"
+        label="パスワード"
         prepend-inner-icon="mdi-lock-outline"
         :type="showPassword ? 'text' : 'password'"
         :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
         @click:append-inner="showPassword = !showPassword"
         ref="formPass"
+        autocomplete="new-password"
         @keydown.enter="$refs.formRePass.focus()"
         :rules="[rules.required]"
         )
@@ -57,12 +60,13 @@
         v-if="page === 0"
         v-model="confirmPassword"
         name="confirmPassword"
-        label="Confirm Password"
+        label="パスワード（確認用）"
         prepend-inner-icon="mdi-lock-outline"
         :type="showConfirmPassword ? 'text' : 'password'"
         :append-inner-icon="showConfirmPassword ? 'mdi-eye' : 'mdi-eye-off'"
         @click:append-inner="showConfirmPassword = !showConfirmPassword"
         ref="formRePass"
+        autocomplete="new-password"
         @keydown.enter="agreement = true;$refs.formRegistar.$el.focus();"
         :rules="[rules.required]"
         )

@@ -19,12 +19,13 @@
         required
         clearable
         ref="userName"
+        autocomplete="username"
         @keydown.enter="$refs.mailAddress.focus()"
         )
       v-text-field(
         v-if="page === 0"
         v-model="mailAddress"
-        label="Mailaddress"
+        label="メールアドレス"
         placeholder="mail@example.com"
         :rules="rules"
         prepend-inner-icon="mdi-email-outline"
@@ -32,6 +33,7 @@
         clearable
         required
         ref="maillAddress"
+        autocomplete="email"
         @keydown.enter="requestToken()"
         )
       a.forgot-password(v-if="page === 0" href="/login") パスワードを思い出した

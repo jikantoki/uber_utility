@@ -19,18 +19,20 @@
         required
         clearable
         ref="userName"
+        autocomplete="username"
         @keydown.enter="$refs.password.focus()"
         )
       v-text-field(
         v-if="page === 0"
         v-model="password"
-        label="Password"
+        label="パスワード"
         prepend-inner-icon="mdi-lock-outline"
         :type="showPassword ? 'text' : 'password'"
         :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
         @click:append-inner="showPassword = !showPassword"
         required
         ref="password"
+        autocomplete="current-password"
         @keydown.enter="requestToken()"
         )
       a.forgot-password(v-if="page === 0" href="/password_reset") パスワードを忘れました

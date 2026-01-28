@@ -11,12 +11,18 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@capacitor/android": "^8.0.2",
+    "@capacitor/app": "^8.0.0",
+    "@capacitor/assets": "^3.0.5",
+    "@capacitor/cli": "^8.0.2",
+    "@capacitor/core": "^8.0.2",
     "@mdi/font": "^7.4.47",
     "@nuxt/devtools": "^2.6.3",
     "@pinia-plugin-persistedstate/nuxt": "^1.2.1",
     "@pinia/nuxt": "^0.11.2",
     "@popperjs/core": "^2.11.8",
     "@vue/language-plugin-pug": "^3.0.6",
+    "nuxi": "^3.32.0",
     "nuxt": "^4.0.3",
     "pinia": "^3.0.3",
     "pug": "^3.0.3",

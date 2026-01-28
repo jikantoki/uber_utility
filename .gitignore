@@ -35,3 +35,5 @@ logs
 .env
 .env.*
 !.env.example
+
+android-keystore.keystore

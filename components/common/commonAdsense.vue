@@ -1,10 +1,6 @@
 <template lang="pug">
 .koukoku
-  //-adsense(ad-client="ca-pub-8459277046412894"
-    ad-slot="5423811324"
-    ad-style="display:block"
-    ad-format="auto")
-  .koukoku-test
+  //- .koukoku-test
     .koukoku-body.py-2
       img.mx-4.koukoku-img(src="/img/icon512.png")
       .koukoku-text.ml-2

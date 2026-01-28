@@ -44,15 +44,15 @@ export default {
           icon: 'mdi-cash',
           href: '/analytics',
         },
+        // {
+        //   name: '燃費',
+        //   icon: 'mdi-gas-station',
+        //   href: '/fuel',
+        // },
         {
-          name: '燃費',
-          icon: 'mdi-gas-station',
-          href: '/fuel',
-        },
-        {
-          name: 'その他',
-          icon: 'mdi-cog',
-          href: '/other',
+          name: 'About',
+          icon: 'mdi-information-outline',
+          href: '/about',
         },
       ],
     }

@@ -73,8 +73,8 @@
                 v-list-item-title ログアウト
     v-app-bar
       template(v-slot:append)
-        v-btn(icon="mdi-magnify" @click="headerSearchDialog = true")
-        v-menu
+        //- v-btn(icon="mdi-magnify" @click="headerSearchDialog = true")
+        //- v-menu
           template(v-slot:activator="{props}")
             v-btn(icon v-bind="props" style="position: relative;")
               v-icon mdi-dots-vertical

@@ -2,18 +2,47 @@
   .other-page
     .wrap
       v-card.content(elevation="4")
-        .text-h4 稼働カレンダー
-        v-sheet
-          v-calendar(
-            transparent
-            borderless
-            ref="calendar"
-            :attributes="attributes"
-            :is-dark="nowTheme.theme == 'dark'"
-            expanded
-            first-day-of-week=2
-            :masks="{ title: 'YYYY年MMM' }"
-          )
+        .text-h4 稼働実績カレンダー
+        .calendar.my-4
+          v-sheet
+            v-toolbar
+              v-btn(
+                small
+                icon="mdi-calendar-today"
+                @click="focus = ''"
+              ) 今日
+              v-btn.ma-2(
+                small
+                icon="mdi-chevron-left"
+                @click=" $refs.calendar.prev() "
+              )
+              v-btn.ma-2(
+                small
+                icon="mdi-chevron-right"
+                @click=" $refs.calendar.next() "
+              )
+              v-toolbar-title.text-h6 {{ $refs.calendar ? $refs.calendar.title : '' }}
+          v-sheet
+            VCalendar(
+              ref="calendar"
+              :events="attributes"
+              color="var(--accent-color)"
+              v-model="focus"
+              @click:event="showEvent"
+            )
+            v-menu(
+              v-model="selectedOpen"
+              :activator="selectedElement"
+              max-width="300"
+            )
+              v-card
+                v-card-title 稼働詳細
+                v-card-text
+                  p 日付: {{ selectedEvent.start.getFullYear() }}年{{ selectedEvent.start.getMonth() + 1 }}月{{ selectedEvent.start.getDate() }}日
+                  //p 拠点: {{ selectedEvent.name }}
+                  //p 獲得ポイント: {{ selectedEvent.productionPoint }}ポイント
+                  p 売上: {{ selectedEvent.commission.toLocaleString() }}円
+                  //p 進捗: {{ selectedEvent.progress }}%
 </template>
 
 <script>
@@ -44,10 +73,15 @@ export default {
       commission: [],
       /** カレンダーに表示するイベントリスト */
       attributes: [],
+      focus: '',
+      selectedEvent: {},
+      selectedElement: null,
+      selectedOpen: false,
     }
   },
   async mounted() {
     this.setTitle('カレンダー')
+    console.log(this.$refs.calendar.title)
 
     //commissionリスト取得
     if (this.userStore && this.userStore.userId) {
@@ -71,18 +105,58 @@ export default {
           time: workData.time,
           memo: workData.memo,
         })
+        let highlight = {}
+        if (workData.commission > 0) {
+          highlight = {
+            color: 'var(--accent-color)',
+            fillMode: 'solid',
+          }
+        } else {
+          highlight = {
+            color: '#666666',
+            fillMode: 'outline',
+          }
+        }
         this.attributes.push({
+          /*
           key: `workdata${index}`,
-          highlight: true,
+          highlight: highlight,
           dates: date,
           popover: {
-            label: `${workData.commission - workData.cost}円`,
+            label: `${workData.place}、${productionPoint}ポイント、${
+              workData.commission - workData.cost
+            }`,
           },
+          */
+          start: date,
+          end: date,
+          name: workData.place,
+          commission: workData.commission,
+          color: highlight.color,
         })
       })
     }
   },
-  methods: {},
+  methods: {
+    showEvent(nativeEvent, { event }) {
+      const open = () => {
+        this.selectedEvent = event
+        this.selectedElement = nativeEvent.target
+        requestAnimationFrame(() =>
+          requestAnimationFrame(() => (this.selectedOpen = true)),
+        )
+      }
+
+      if (this.selectedOpen) {
+        this.selectedOpen = false
+        requestAnimationFrame(() => requestAnimationFrame(() => open()))
+      } else {
+        open()
+      }
+
+      nativeEvent.stopPropagation()
+    },
+  },
 }
 </script>
 

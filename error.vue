@@ -28,6 +28,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use 'sass:map';
 $breakpoints: (
   'smartPhone': 'screen and (max-width:900px)',
   'tablet': 'screen and (max-width:1400px)',
@@ -40,7 +41,7 @@ $font: 'Zen Maru Gothic', sans-serif;
 /* フォント設定ここまで */
 
 @mixin mq($breakpoint) {
-  @media #{map-get($breakpoints, $breakpoint)} {
+  @media #{map.get($breakpoints, $breakpoint)} {
     @content;
   }
 }

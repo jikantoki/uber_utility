@@ -42,6 +42,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use 'sass:map';
 $breakpoints: (
   'smartPhone': 'screen and (max-width:700px)',
   'tablet': 'screen and (max-width:1100px)',
@@ -49,7 +50,7 @@ $breakpoints: (
 ) !default;
 
 @mixin mq($breakpoint) {
-  @media #{map-get($breakpoints, $breakpoint)} {
+  @media #{map.get($breakpoints, $breakpoint)} {
     @content;
   }
 }

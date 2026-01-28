@@ -132,21 +132,6 @@ export default {
         })
     }, 1000)
 
-    //v-menu表示バグ一時的な修正
-    setInterval(() => {
-      const overlaysCollection =
-        document.getElementsByClassName('v-overlay--active')
-      const overlays = Array.from(overlaysCollection)
-      overlays.forEach((elm) => {
-        const overlayContentCollection =
-          elm.getElementsByClassName('v-overlay__content')
-        const overlayContent = Array.from(overlayContentCollection)
-        if (overlayContent[0].style.position == 'fixed') {
-          overlayContent[0].style.position = 'static'
-        }
-      })
-    }, 10)
-
     /**
      * mountedの最後に記述
      */
@@ -231,6 +216,7 @@ export default {
 </script>
 
 <style lang="scss">
+@use 'sass:map';
 $breakpoints: (
   'smartPhone': 'screen and (max-width:700px)',
   'tablet': 'screen and (max-width:1100px)',
@@ -238,7 +224,7 @@ $breakpoints: (
 ) !default;
 
 @mixin mq($breakpoint) {
-  @media #{map-get($breakpoints, $breakpoint)} {
+  @media #{map.get($breakpoints, $breakpoint)} {
     @content;
   }
 }
@@ -296,42 +282,52 @@ body {
   .text-h1 {
     font-size: 3em !important;
     line-height: 4rem;
+  }
+  svg.text-h1 {
     height: 4rem;
   }
   .text-h2 {
     font-size: 2.8em !important;
     line-height: 3.75rem;
+  }
+  svg.text-h2 {
     height: 3.75rem;
   }
   .text-h3 {
     font-size: 2.4em !important;
     line-height: 3.125rem;
+  }
+  svg.text-h3 {
     height: 3.125rem !important;
   }
   .text-h4 {
     font-size: 2.2em !important;
     line-height: 2.5rem;
+  }
+  svg.text-h4 {
     height: 2.5rem;
   }
   .text-h5 {
     font-size: 2em !important;
     line-height: 2rem;
+  }
+  svg.text-h5 {
     height: 2rem;
   }
   .text-h6,
   .text {
     font-size: 1.5em !important;
-    line-height: 2rem;
+    line-height: 1.5rem;
   }
-  .text-h6 {
-    height: 2rem;
+  svg.text-h6 {
+    height: 1.5rem;
   }
   .text-h7,
   .text-small {
     font-size: 1em !important;
     line-height: 1.45rem;
   }
-  .text-h7 {
+  svg.text-h7 {
     height: 1.45rem;
   }
   .text-h0,

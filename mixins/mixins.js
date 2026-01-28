@@ -276,7 +276,7 @@ export default {
         case 'ja':
           return '日本語'
         case 'en':
-          return 'English'
+          return 'English (Beta)'
         case 'cn':
           return '中文'
         default:

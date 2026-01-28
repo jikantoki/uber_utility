@@ -14,7 +14,7 @@
           subTitle="UberUTLで、稼働履歴や統計を見てみよう"
           :buttons="commonBarButtons"
           )
-        common-bar(
+        //- common-bar(
           v-if="userStore.userId && isDisplayCommonPushButtons"
           title="最新の情報を入手しよう"
           subTitle="通知の送信を許可することで、最新情報を入手できます。"
